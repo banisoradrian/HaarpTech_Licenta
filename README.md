@@ -1,0 +1,1 @@
+# HaarpTech_Licenta
