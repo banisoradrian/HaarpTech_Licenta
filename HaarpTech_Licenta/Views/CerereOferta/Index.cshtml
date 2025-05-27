@@ -1,0 +1,213 @@
+﻿@model IEnumerable<HaarpTech_Licenta.Models.CerereOferta>
+
+@{
+    ViewData["Title"] = "Cereri Oferte";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6 text-primary">
+            <i class="fas fa-file-invoice-dollar me-2"></i>@ViewData["Title"]
+        </h1>
+        <div class="w-50">
+            <input type="text" id="searchInput" class="form-control"
+            placeholder="Caută în cereri...">
+        </div>
+
+    </div>
+    <p>
+        <a class="btn btn-primary" asp-controller="CerereOferta" asp-action="Create"> <i class="bi bi-plus-circle"> Propune o cerere </i> </a>
+    </p>
+    <div class="row g-4" id="cereriContainer">
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <input type="hidden" asp-for="@item.ID_CERERE" />
+                <div class="col-12 cerere-card">
+                    <div class="card shadow-lg border-0 rounded-3">
+                        <div class="card-header bg-primary text-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">@item.DenumireCerere</h5>
+                                <span class="badge @GetStatusBadge(item.StatusCerere)">
+                                    @item.StatusCerere
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <!-- Coloana 1 -->
+                                <div class="col-md-4">
+                                    <dl class="row">
+                                        <dt class="col-sm-5">Data Cererii:</dt>
+                                        <dd class="col-sm-7">@item.DataCereri?.ToString("dd MMM yyyy HH:mm")</dd>
+
+                                        <dt class ="col-sm-5"> Volum de date</dt>
+                                        <dd class="col-sm-7">@item.VolumDeDate Inregistrari</dd>
+
+                                        <dt class="col-sm-5">Buget Estimat:</dt>
+                                        <dd class="col-sm-7 fw-bold text-success"> @item.BugetEstimat  Lei </dd>
+                                    </dl>
+                                </div>
+
+                                <!-- Coloana 2 -->
+                                <div class="col-md-4">
+                                    <dl class="row">
+                                        <dt class="col-sm-5">Tip Aplicație:</dt>
+                                        <dd class="col-sm-7">@item.TipAplicatie</dd>
+
+                                        <dt class="col-sm-5">Servicii AI:</dt>
+                                        <dd class="col-sm-7">@item.ServiciiAI</dd>
+
+                                        <dt class="col-sm-5">Nivel Securitate:</dt>
+                                        <dd class="col-sm-7">@item.NivelDeSecuritate</dd>
+
+                                        <dt class="col-sm-5">Bază de Date:</dt>
+                                        <dd class="col-sm-7">@item.BazaDeDate</dd>
+                                    </dl>
+                                </div>
+
+
+                                <!-- Coloana 3 -->
+                                <div class="col-md-4">
+                                    <dl class="row">
+                                        <dt class="col-sm-5">Tehnologie:</dt>
+                                        <dd class="col-sm-7">@item.Tehnologie</dd>
+
+                                        <dt class="col-sm-5">Timp Realizare:</dt>
+                                        <dd class="col-sm-7">@item.TimpDeRealizare</dd>
+
+                                        <dt class="col-sm-5">Integrare Sisteme:</dt>
+                                        <dd class="col-sm-7">@item.IntegrareCuAlteSisteme</dd>
+
+                                        <dt class="col-sm-5">Status Ofertă:</dt>
+                                        <dd class="col-sm-7">@item.StatusOferta</dd>
+                                    </dl>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <h6 class="text-muted mb-2">Descriere:</h6>
+                                <p class="card-text">@item.Descriere</p>
+                            </div>
+                        </div>
+
+                        <!-- Footer cu acțiuni -->
+                        <div class="card-footer bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+
+                                </small>
+                                @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+                                {
+                                    <div class="btn-group">
+                                        <a asp-controller="CerereOferta" asp-action="Edit" asp-route-id="@item.ID_CERERE"
+                                        class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit me-2"></i>Editează
+                                        </a>
+
+                                        <a asp-controller="CerereOferta" asp-action="Details" asp-route-id="@item.ID_CERERE"
+                                        class="btn btn-sm btn-outline-info">
+                                            <i class="fas fa-info-circle me-2"></i>Detalii
+                                        </a>
+
+                                        <a asp-controller="CerereOferta" asp-action="Delete" asp-route-id="@item.ID_CERERE"
+                                        class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash-alt me-2"></i>Șterge
+                                        </a>
+
+                                        <div class="btn-group">
+                                            <a asp-controller="Sedinta" asp-action="Create" asp-route-id="@item.ID_CERERE"
+                                            class="btn btn-sm btn-outline-success">
+                                                <i class="fas fa-trash-alt me-2"></i>Programează ședință
+                                            </a>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="btn-group">
+                                        <a asp-controller="Sedinta" asp-action="Create" asp-route-id="@item.ID_CERERE"
+                                        class="btn btn-sm btn-outline-success">
+                                            <i class="fas fa-trash-alt me-2"></i>Programează ședință
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Nu există cereri înregistrate
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 15px;
+            transition: transform 0.2s;
+        }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            }
+
+        .badge {
+            font-size: 0.85em;
+            padding: 0.5em 0.75em;
+            min-width: 90px;
+        }
+
+        dt {
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        dd {
+            color: #343a40;
+        }
+
+        .card-header {
+            border-radius: 15px 15px 0 0 !important;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const term = this.value.trim().toLowerCase();
+            document.querySelectorAll('.cerere-card').forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(term) ? '' : 'none';
+            });
+        });
+    </script>
+}
+
+@functions {
+    string GetStatusBadge(string status)
+    {
+        return status switch
+        {
+            "Nouă" => "bg-primary",
+            "În analiză" => "bg-warning text-dark",
+            "Aprobată" => "bg-success",
+            "Respinsă" => "bg-danger",
+            "Expirată" => "bg-secondary",
+            _ => "bg-light text-dark"
+        };
+    }
+}

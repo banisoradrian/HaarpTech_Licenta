@@ -1,0 +1,20 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityRole
+
+@{
+    ViewData["Title"] = "Ștergere Rol";
+}
+
+<html lang="ro" data-bs-theme="dark">
+<body>
+    <h4 class="text-center">Sigur dorești să ștergi rolul de @Model.Name?</h4>
+    <hr />
+    <br />
+    <div class="d-flex justify-content-center">
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Șterge" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary ms-2">Înapoi la listă</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+﻿@model List<Microsoft.AspNetCore.Identity.IdentityRole>
+@{
+    ViewData["Title"] = "Roluri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html lang="en" data-bs-theme="dark">
+
+<body>
+    <h1>@ViewData["Title"]</h1>
+    <hr />
+    <br />
+    <div class="border border-2 p-5 table-container table-responsive custom-table-wrapper">
+            <form method="post" asp-action="AddRole" asp-controller="RoleManager">
+                <div class="input-group">
+                    <input name="roleName" class="form-control" placeholder="Introdu un rol de utilizator">
+                    <span class="input-group-btn">
+                        <button class="btn btn-info">Adaugă rol</button>
+                    </span>
+                </div>
+            </form>
+
+             <br />
+
+            <table class="table table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Rol</th>
+                        <th style="text-align: right;">Acțiune</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var role in Model)
+                        {
+                            <tr>
+                                <td>@role.Name</td>
+
+                            <td style="text-align: right;">
+                                    <a class="btn btn-danger" asp-controller="RoleManager" asp-action="Delete" asp-route-id="@role.Id">
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+    </div>
+    <footer class="text-center text-light mt-4">
+        <p>&copy; 2025 - HaarpTech_Licenta - <a href="/Privacy" class="text-info">Privacy</a></p>
+    </footer>
+</body>
+</html>

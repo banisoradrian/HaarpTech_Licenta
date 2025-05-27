@@ -1,0 +1,171 @@
+﻿@model HaarpTech_Licenta.Models.CerereOferta
+
+@{
+    ViewData["Title"] = "Creare Cerere Ofertă";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6 text-primary">
+            <i class="fas fa-plus-circle me-2"></i>@ViewData["Title"]
+        </h1>
+        <a asp-action="Index" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left me-2"></i>Înapoi la listă
+        </a>
+    </div>
+
+    <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0">Adăugare cerere nouă</h5>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Create" class="row g-3">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!-- Coloana 1 -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="DenumireCerere" class="control-label"></label>
+                        <input asp-for="DenumireCerere" class="form-control" placeholder="Introdu denumirea cererii" />
+                        <span asp-validation-for="DenumireCerere" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="StatusCerere" class="control-label"></label>
+                        <select asp-for="StatusCerere" class="form-select">
+                            <option value="Nouă">Nouă</option>
+                            <option value="În analiză">În analiză</option>
+                            <option value="Aprobată">Aprobată</option>
+                            <option value="Respinsă">Respinsă</option>
+                            <option value="Expirată">Expirată</option>
+                        </select>
+                        <span asp-validation-for="StatusCerere" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Coloana 2 -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="TipAplicatie" class="control-label"></label>
+                        <select asp-for="TipAplicatie" class="form-select">
+                            <option value="Web">Aplicație Web</option>
+                            <option value="Mobile">Aplicație Mobile</option>
+                            <option value="Desktop">Aplicație Desktop</option>
+                        </select>
+                        <span asp-validation-for="TipAplicatie" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="NivelDeSecuritate" class="control-label"></label>
+                        <select asp-for="NivelDeSecuritate" class="form-select">
+                            <option value="Standard">Standard</option>
+                            <option value="Înalt">Înalt</option>
+                            <option value="Critic">Critic</option>
+                        </select>
+                        <span asp-validation-for="NivelDeSecuritate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="BazaDeDate" class="control-label"></label>
+                        <select asp-for="BazaDeDate" class="form-select">
+                            <option value="SQL Server">SQL Server</option>
+                            <option value="MySQL">MySQL</option>
+                            <option value="Oracle">Oracle</option>
+                        </select>
+                        <span asp-validation-for="BazaDeDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Coloana 3 -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="VolumDeDate" class="control-label"></label>
+                        <input asp-for="VolumDeDate" class="form-control" placeholder="Introdu numărul de înregistrări" />
+                        <span asp-validation-for="VolumDeDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="BugetEstimat" class="control-label"></label>
+                        <div class="input-group">
+                            <input asp-for="BugetEstimat" class="form-control" placeholder="Introdu bugetul estimat" />
+                            <span class="input-group-text">Lei</span>
+                        </div>
+                        <span asp-validation-for="BugetEstimat" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="TimpDeRealizare" class="control-label"></label>
+                        <input asp-for="TimpDeRealizare" class="form-control" placeholder="Introdu durata estimată" />
+                        <span asp-validation-for="TimpDeRealizare" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Alte câmpuri -->
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="Descriere" class="control-label"></label>
+                        <textarea asp-for="Descriere" class="form-control" rows="4" placeholder="Adaugă o descriere detaliată..."></textarea>
+                        <span asp-validation-for="Descriere" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="ServiciiAI" class="control-label"></label>
+                        <input asp-for="ServiciiAI" class="form-control" placeholder="Specificați serviciile AI necesare" />
+                        <span asp-validation-for="ServiciiAI" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="IntegrareCuAlteSisteme" class="control-label"></label>
+                        <input asp-for="IntegrareCuAlteSisteme" class="form-control" placeholder="Enumerați sistemele de integrat" />
+                        <span asp-validation-for="IntegrareCuAlteSisteme" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12 mt-4">
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-2"></i>Creează cerere
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-times me-2"></i>Anulează
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .card {
+            border-radius: 15px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        ::placeholder {
+            color: #6c757d;
+            opacity: 0.7;
+        }
+    </style>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

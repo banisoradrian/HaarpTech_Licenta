@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Sedinta>
+
+
+@{
+    ViewData["Title"] = "Ședințe";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary mb-0"><i class="fas fa-calendar-alt"></i> Listă Ședințe</h2>
+        <div class="w-50">
+            <input type="text" id="searchInput" class="form-control"
+                   placeholder="Caută în titlu, descriere, locație sau participanți...">
+        </div>
+    </div>
+    <p>
+        <a class="btn btn-primary" asp-controller="Sedinta" asp-action="Create"> <i class="bi bi-plus-circle"> </i> </a>
+    </p>
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-table"></i> Detalii Ședințe</h4>
+        </div>
+
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Data</th>
+                                <th>Subiect</th>
+                                <th>Descriere</th>
+                                <th>Status</th>
+                                <th>Locație</th>
+                                <th>Tip Ședință</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="sedinteTable">
+                            @foreach (var sedinta in Model)
+                            {
+                                <tr class="sedinta-row">
+                                    <td>@sedinta.DataSedinta</td>
+                                    <td>@sedinta.Subiect</td>
+                                    <td>@sedinta.Descriere</td>
+                                    <td>@sedinta.StatusSedinta</td>
+                                    <td>@sedinta.Locatie</td>
+                                    <td>@(sedinta.TipSedinta ?? "-")</td>
+                                    <td>
+                                    <td>
+                                        <a class="btn btn-primary" asp-controller="Sedinta" asp-action="Edit" asp-route-id="@sedinta.ID_SEDINTA">
+                                            <i class="bi bi-pen-fill"></i>
+                                        </a>
+
+                                        <a class="btn btn-warning" asp-controller="Sedinta" asp-action="Details" asp-route-id="@sedinta.ID_SEDINTA">
+                                            <i class="bi bi-info-circle"></i>
+                                        </a>
+
+                                        <a class="btn btn-danger" asp-controller="Sedinta" asp-action="Delete" asp-route-id="@sedinta.ID_SEDINTA">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </a>
+                                    </td>   
+                                </tr>
+                             }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    Nu există ședințe înregistrate.
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+            transition: transform 0.3s ease;
+        }
+
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        #searchInput {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 20px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const term = this.value.trim().toLowerCase();
+            document.querySelectorAll('.sedinta-row').forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(term) ? '' : 'none';
+            });
+        });
+    </script>
+}

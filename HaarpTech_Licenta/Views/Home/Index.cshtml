@@ -1,0 +1,30 @@
+﻿@using System.Security.Claims
+@{
+    ViewData["Title"] = "Home Page";
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+@model HaarpTech_Licenta.Models.CreateAccountViewModel
+
+
+<div class="text-center">
+    <h1 class="display-4">Bun venit !</h1>
+</div> 
+<br />
+<div class="text-center">
+    <h1> link  Sedinte</h1>
+    
+    <a class="btn btn-primary" asp-controller="Sedinta" asp-action="Index" asp-route-id="@userId">
+        Index Sedinta
+    </a>
+    <br />
+    <h1> link Rapoarte Cerinte</h1>
+    <a class="btn btn-primary" asp-controller="RaportCerinta" asp-action="Index" asp-route-id="@userId">
+        Index Raport Cerinte
+    </a>
+
+    <h1> link  Rapoarte Cerinte</h1>
+
+    <a class="btn btn-primary" asp-controller="CerereOferta" asp-action="Index">
+        Index Cereri Oferte
+    </a>
+</div>

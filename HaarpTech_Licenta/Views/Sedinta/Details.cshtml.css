@@ -1,0 +1,26 @@
+﻿.navbar-custom {
+    background-color:chocolate; /* Schimbă culoarea cu cea dorită */
+}
+
+
+
+table th, table td {
+    padding: 15px; /* Mărește padding-ul pentru toate celulele tabelului */
+}
+
+
+
+table th {
+    font-size: 12px;
+}
+
+table {
+    width: 120%;
+
+}
+
+.custom-table-wrapper {
+    margin-left: 0px !important;
+    width: 108%;
+}
+

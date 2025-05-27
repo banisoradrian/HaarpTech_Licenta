@@ -1,0 +1,158 @@
+﻿@model HaarpTech_Licenta.Models.CerereOferta
+
+@{
+    ViewData["Title"] = "Ștergere Cerere Ofertă";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6 text-danger">
+            <i class="fas fa-exclamation-triangle me-2"></i>@ViewData["Title"]
+        </h1>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Înapoi la listă
+        </a>
+    </div>
+
+    <div class="card shadow-lg border-danger rounded-3">
+        <div class="card-header bg-danger text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Confirmare ștergere: @Model.DenumireCerere</h5>
+                <span class="badge @GetStatusBadge(Model.StatusCerere)">
+                    @Model.StatusCerere
+                </span>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading"><i class="fas fa-radiation me-2"></i>Atenție!</h4>
+                <p class="mb-0">Această acțiune este permanentă și ireversibilă. Sigur doriți să ștergeți această cerere?</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Coloana 1 -->
+                <div class="col-md-4">
+                    <dl class="row">
+                        <dt class="col-sm-5">Data Cererii:</dt>
+                        <dd class="col-sm-7">@Model.DataCereri?.ToString("dd MMM yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-5">Buget Estimat:</dt>
+                        <dd class="col-sm-7 fw-bold text-danger">@Model.BugetEstimat Lei</dd>
+
+                        <dt class="col-sm-5">Tip Aplicație:</dt>
+                        <dd class="col-sm-7">@Model.TipAplicatie</dd>
+                    </dl>
+                </div>
+
+                <!-- Coloana 2 -->
+                <div class="col-md-4">
+                    <dl class="row">
+                        <dt class="col-sm-5">Volum de date:</dt>
+                        <dd class="col-sm-7">@Model.VolumDeDate înregistrări</dd>
+
+                        <dt class="col-sm-5">Timp Realizare:</dt>
+                        <dd class="col-sm-7">@Model.TimpDeRealizare</dd>
+
+                        <dt class="col-sm-5">Status Ofertă:</dt>
+                        <dd class="col-sm-7">@Model.StatusOferta</dd>
+                    </dl>
+                </div>
+
+                <!-- Coloana 3 -->
+                <div class="col-md-4">
+                    <dl class="row">
+                        <dt class="col-sm-5">Nivel Securitate:</dt>
+                        <dd class="col-sm-7">@Model.NivelDeSecuritate</dd>
+
+                        <dt class="col-sm-5">Bază de Date:</dt>
+                        <dd class="col-sm-7">@Model.BazaDeDate</dd>
+
+                        <dt class="col-sm-5">Tehnologie:</dt>
+                        <dd class="col-sm-7">@Model.Tehnologie</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Descriere -->
+            <div class="mt-4">
+                <h6 class="text-muted mb-2">Descriere:</h6>
+                <div class="bg-light p-3 rounded-2 border">
+                    @Model.Descriere
+                </div>
+            </div>
+
+            <form asp-action="Delete" class="mt-5">
+                <input type="hidden" asp-for="ID_CERERE" />
+                <div class="d-flex justify-content-end gap-3">
+                    <button type="submit" class="btn btn-danger btn-lg">
+                        <i class="fas fa-trash-alt me-2"></i>Confirmă ștergerea
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-times me-2"></i>Anulează
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer cu Metadate -->
+        <div class="card-footer bg-light">
+            <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">
+                    Creată la: @Model.DataCereri?.ToString("dd MMM yyyy HH:mm") |
+                    ID: @Model.ID_CERERE
+                </small>
+                <small class="text-muted">
+                    Ultima actualizare: @DateTime.Now.AddDays(-1).ToString("dd MMM yyyy HH:mm")
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 15px;
+            border-width: 2px;
+        }
+
+        .alert-danger {
+            border-radius: 10px;
+        }
+
+        .border-danger {
+            border-color: #dc3545 !important;
+        }
+
+        dt {
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        dd {
+            color: #343a40;
+        }
+
+        .badge {
+            font-size: 0.85em;
+            padding: 0.5em 0.75em;
+            min-width: 90px;
+        }
+    </style>
+}
+
+@functions {
+    string GetStatusBadge(string status)
+    {
+        return status switch
+        {
+            "Nouă" => "bg-primary",
+            "În analiză" => "bg-warning text-dark",
+            "Aprobată" => "bg-success",
+            "Respinsă" => "bg-danger",
+            "Expirată" => "bg-secondary",
+            _ => "bg-light text-dark"
+        };
+    }
+}

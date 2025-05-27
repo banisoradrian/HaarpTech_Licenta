@@ -1,0 +1,119 @@
+﻿@model HaarpTech_Licenta.Models.RaportCerinta
+
+@{
+    ViewData["Title"] = "Editare Raport Cerință";
+}
+
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">@ViewData["Title"]</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="ID_RAPORT" />
+            <input type="hidden" asp-for="ID_SEDINTA" />
+
+            <div class="mb-3">
+                <label asp-for="Descriere" class="form-label"></label>
+                <textarea asp-for="Descriere" class="form-control" rows="4" required></textarea>
+                <div class="invalid-feedback">Descrierea este obligatorie.</div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="StatusRaport" class="form-label"></label>
+                    <select asp-for="StatusRaport" class="form-select"  required>
+                        <option value="Neverificat">Neverificat</option>
+                        <option value="În curs de analiză">În curs de analiză</option>
+                        <option value="Verificat">Verificat</option>
+                    </select>
+                    <div class="invalid-feedback">Selectați un status.</div>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Prioritate" class="form-label"></label>
+                    <select asp-for="Prioritate" class="form-select"  required>
+                        <option value="Scaăzută">Scaăzută</option>
+                        <option value="Medie">Medie</option>
+                        <option value="Ridicată">Ridicată</option>
+                        <option value="Urgentă">Urgentă</option>
+                    </select>
+                    <div class="invalid-feedback">Selectați o prioritate.</div>
+                </div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="col-md-6">
+                        <label asp-for="StatusOferta" class="form-label"></label>
+                        <select asp-for="StatusOferta" class="form-select" required>
+                            <option value="Neverificat">Neverificată</option>
+                            <option value="În curs de analiză">În curs de analiză</option>
+                            <option value="Aprobată">Aprobată</option>
+                            <option value="Respinsă">Respinsă</option>
+                        </select>
+                        <div class="invalid-feedback">Selectați un status</div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-6">
+                        <label asp-for="StatusOferta" class="form-label"></label>
+                        <input asp-for="StatusOferta"
+                               class="form-control"
+                               readonly />
+                        <span asp-validation-for="StatusOferta" class="text-danger"></span>
+                    </div>
+                }
+                @if (User.IsInRole("ProjectManager"))
+                {
+                    <div class="col-md-6">
+                        <label asp-for="StatusResurse" class="form-label"></label>
+                        <select asp-for="StatusResurse" class="form-select" required>
+                            <option value="Neverificat">Neverificată</option>
+                            <option value="În curs de analiză">În curs de analiză</option>
+                            <option value="Aprobată">Aprobată</option>
+                            <option value="Respinsă">Respinsă</option>
+                        </select>
+                        <div class="invalid-feedback">Selectați un status</div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-6">
+                        <label asp-for="StatusResurse" class="form-label"></label>
+                        <input asp-for="StatusResurse"
+                               class="form-control"
+                               readonly />
+                        <span asp-validation-for="StatusResurse" class="text-danger"></span>
+                    </div>
+                }
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-success"><i class="fas fa-save me-2"></i>Salvează modificări</button>
+                <a asp-action="Index" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Înapoi</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Bootstrap validation
+        (() => {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+}

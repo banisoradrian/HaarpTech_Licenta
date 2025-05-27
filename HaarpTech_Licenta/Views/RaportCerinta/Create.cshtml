@@ -1,0 +1,96 @@
+﻿@model HaarpTech_Licenta.Models.RaportCerinta
+
+@{
+    ViewData["Title"] = "Creează Raport Cerință";
+}
+
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="fas fa-file-alt me-2"></i>@ViewData["Title"]</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post" class="needs-validation" novalidate>
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.ID_SEDINTA)
+
+            <div class="mb-4">
+                <label asp-for="Descriere" class="form-label fw-bold"></label>
+                <textarea asp-for="Descriere" class="form-control" rows="5" placeholder="Introduceți descrierea cerinței..." required></textarea>
+                <div class="invalid-feedback">Descrierea este obligatorie.</div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <label asp-for="StatusRaport" class="form-label fw-bold"></label>
+                    <select asp-for="StatusRaport" class="form-select" required>
+                        <option value="" disabled selected>Selectați statusul</option>
+                        <option value="Neverificat">Neverificat</option>
+                        <option value="În curs de analiză">În curs de analiză</option>
+                        <option value="Verificat">Verificat</option>
+                    </select>
+                    <div class="invalid-feedback">Selectați un status valid.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Prioritate" class="form-label fw-bold"></label>
+                    <select asp-for="Prioritate" class="form-select" required>
+                        <option value="" disabled selected>Selectați prioritatea</option>
+                        <option value="Scăzută">Scăzută</option>
+                        <option value="Medie">Medie</option>
+                        <option value="Ridicată">Ridicată</option>
+                        <option value="Urgentă">Urgentă</option>
+                    </select>
+                    <div class="invalid-feedback">Selectați o prioritate validă.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="StatusOferta" class="control-label"></label>
+                    <input name="StatusOferta"
+                           class="form-control"
+                           value="Neverificat"   readonly />           
+                    <span asp-validation-for="StatusOferta" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="StatusResurse" class="control-label"></label>
+                    <input name="StatusResurse"
+                           class="form-control"
+                           value="Neverificat" readonly />              
+                    <span asp-validation-for="StatusResurse" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Butoane -->
+            <div class="d-flex gap-3 mt-5">
+                <button type="submit" class="btn btn-success px-4">
+                    <i class="fas fa-save me-2"></i>Salvează
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                    <i class="fas fa-arrow-left me-2"></i>Înapoi
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Validare client-side custom
+        (function () {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+}

@@ -1,0 +1,35 @@
+﻿@model HaarpTech_Licenta.Models.RaportCerinta
+
+@{
+    ViewData["Title"] = "Ștergere Raport Cerință";
+}
+
+<div class="alert alert-danger" role="alert">
+    <h4 class="alert-heading">Sigur doriți să ștergeți acest raport?</h4>
+    <p>Această acțiune este permanentă și nu poate fi anulată.</p>
+</div>
+
+<div class="card shadow">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Descriere:</dt>
+            <dd class="col-sm-9">@Model.Descriere</dd>
+
+            <dt class="col-sm-3">Status:</dt>
+            <dd class="col-sm-9">@Model.StatusRaport</dd>
+
+            <dt class="col-sm-3">Prioritate:</dt>
+            <dd class="col-sm-9">@Model.Prioritate</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="ID_RAPORT" />
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger"><i class="fas fa-trash me-2"></i>Șterge definitiv</button>
+                <a asp-action="Index" class="btn btn-outline-secondary"><i class="fas fa-times me-2"></i>Anulează</a>
+            </div>
+        </form>
+    </div>
+</div>

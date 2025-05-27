@@ -1,0 +1,147 @@
+﻿@model HaarpTech_Licenta.Models.CerereOferta
+
+@{
+    ViewData["Title"] = "Detalii Cerere Ofertă";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6 text-primary">
+            <i class="fas fa-file-alt me-2"></i>@ViewData["Title"]
+        </h1>
+        <div class="btn-group">
+            <a asp-action="Index" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Înapoi la listă
+            </a>
+            @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.ID_CERERE" class="btn btn-outline-warning">
+                    <i class="fas fa-edit me-2"></i>Editează
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">@Model.DenumireCerere</h5>
+                <span class="badge @GetStatusBadge(Model.StatusCerere)">
+                    @Model.StatusCerere
+                </span>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row g-4">
+                <!-- Sectiunea Principala -->
+                <div class="col-md-8">
+                    <div class="row g-3">
+                        <!-- Coloana 1 -->
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-5">Data Cererii:</dt>
+                                <dd class="col-sm-7">@Model.DataCereri?.ToString("dd MMM yyyy HH:mm")</dd>
+
+                                <dt class="col-sm-5">Volum de date:</dt>
+                                <dd class="col-sm-7">@Model.VolumDeDate înregistrări</dd>
+
+                                <dt class="col-sm-5">Buget Estimat:</dt>
+                                <dd class="col-sm-7 fw-bold text-success">@Model.BugetEstimat Lei</dd>
+                            </dl>
+                        </div>
+
+                        <!-- Coloana 2 -->
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-5">Tip Aplicație:</dt>
+                                <dd class="col-sm-7">@Model.TipAplicatie</dd>
+
+                                <dt class="col-sm-5">Nivel Securitate:</dt>
+                                <dd class="col-sm-7">@Model.NivelDeSecuritate</dd>
+
+                                <dt class="col-sm-5">Bază de Date:</dt>
+                                <dd class="col-sm-7">@Model.BazaDeDate</dd>
+
+                                <dt class="col-sm-5">Timp Realizare:</dt>
+                                <dd class="col-sm-7">@Model.TimpDeRealizare</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <!-- Sectiune Descriere -->
+                    <div class="mt-4">
+                        <h6 class="text-muted mb-3 border-bottom pb-2">Descriere Proiect</h6>
+                        <div class="bg-light p-3 rounded-2">
+                            @Model.Descriere
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar cu Info Tehnice -->
+                <div class="col-md-4">
+                    <div class="bg-light p-3 rounded-3 h-100">
+                        <h6 class="text-muted mb-3 border-bottom pb-2">Specificații Tehnice</h6>
+                        <dl>
+                            <dt>Tehnologie:</dt>
+                            <dd class="mb-2">@Model.Tehnologie</dd>
+
+                            <dt>Servicii AI:</dt>
+                            <dd class="mb-2">@Model.ServiciiAI</dd>
+
+                            <dt>Integrare Sisteme:</dt>
+                            <dd class="mb-2">@Model.IntegrareCuAlteSisteme</dd>
+
+                            <dt>Status Ofertă:</dt>
+                            <dd class="mb-0">@Model.StatusOferta</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 15px;
+            transition: transform 0.2s;
+        }
+
+        dt {
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        dd {
+            color: #343a40;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            font-size: 0.85em;
+            padding: 0.5em 0.75em;
+            min-width: 90px;
+        }
+
+        .bg-light {
+            background-color: #f8f9fa !important;
+        }
+    </style>
+}
+
+@functions {
+    string GetStatusBadge(string status)
+    {
+        return status switch
+        {
+            "Nouă" => "bg-primary",
+            "În analiză" => "bg-warning text-dark",
+            "Aprobată" => "bg-success",
+            "Respinsă" => "bg-danger",
+            "Expirată" => "bg-secondary",
+            _ => "bg-light text-dark"
+        };
+    }
+}

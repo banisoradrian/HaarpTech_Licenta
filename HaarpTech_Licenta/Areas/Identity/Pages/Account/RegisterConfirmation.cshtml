@@ -1,0 +1,27 @@
+﻿@page
+@model RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Confirmare înregistrare cont";
+}
+
+<h1>@ViewData["Title"]</h1> <hr /> <br />
+@{
+    if (@Model.DisplayConfirmAccountLink)
+    {
+        <p>
+            Pentru a preveni posibile atacuri de rețea și pentru a evita crearea automată excesivă de conturi de către boți, acest formular implementează măsuri suplimentare de securitate.
+            <b> Daca nu apăsați butonul de mai jos , contul dumneavoastră nu va fi confirmat </b>
+        </p>
+        <br />
+        <p>
+            <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account Apasă aici pentru a confirma contul</a>
+        </p>
+    }
+    else
+    {
+<p>
+        Please check your email to confirm your account.
+</p>
+    }
+}
+

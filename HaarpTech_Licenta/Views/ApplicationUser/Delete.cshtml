@@ -1,0 +1,90 @@
+﻿@model HaarpTech_Licenta.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Stergere";
+}
+
+@functions
+{
+    public string GetDisplayValue(string value)
+    {
+        return string.IsNullOrEmpty(value) ? "-" : value;
+    }
+}
+<html lang="en" data-bs-theme="dark">
+
+<body>
+    <h4 class="align-content-center">Sigur doresti sa stergi utilizatorul @Model.LastName @Model.FirstName ?</h4>
+    <hr />
+    <br />
+
+    <div class="row border border-2 p-5">
+        <dl class="row ">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DateCreated)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Country)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Country)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CompanyName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CompanyName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CompanyDescription)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CompanyDescription)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.LabelFor(model => model.PhoneNumber, "Număr de telefon")
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+        </dl>
+    </div>
+    <br />
+
+    <div>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Șterge" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-secondary">Înapoi la listă</a>
+        </form>
+    </div>
+
+</body>
+</html>

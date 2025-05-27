@@ -1,0 +1,49 @@
+﻿@model HaarpTech_Licenta.Models.Sedinta
+
+@{
+    ViewData["Title"] = "Detalii Ședință";
+}
+
+<div class="card mx-auto mt-5" style="max-width: 700px;">
+    <div class="card-header bg-primary text-white text-center">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">ID Ședință:</dt>
+            <dd class="col-sm-8">@Model.ID_SEDINTA</dd>
+
+            <dt class="col-sm-4">Data Ședință:</dt>
+            <dd class="col-sm-8">@Model.DataSedinta.ToString("dd MMMM yyyy, HH:mm")</dd>
+
+            <dt class="col-sm-4">Subiect:</dt>
+            <dd class="col-sm-8">@Model.Subiect</dd>
+
+            <dt class="col-sm-4">Descriere:</dt>
+            <dd class="col-sm-8">@Model.Descriere</dd>
+
+            <dt class="col-sm-4">Status:</dt>
+            <dd class="col-sm-8">
+                <span class="badge
+                    @(Model.StatusSedinta == "Confirmată" ? "bg-success" :
+                      Model.StatusSedinta == "Anulată" ? "bg-danger" : "bg-secondary")">
+                    @Model.StatusSedinta
+                </span>
+            </dd>
+
+            <dt class="col-sm-4">Locație:</dt>
+            <dd class="col-sm-8">@Model.Locatie</dd>
+
+            <dt class="col-sm-4">Tip Ședință:</dt>
+            <dd class="col-sm-8">@Model.TipSedinta</dd>
+
+            <dt class="col-sm-4">Responsabil:</dt>
+            <dd class="col-sm-8">@Model.ID_USER</dd>
+        </dl>
+    </div>
+    <div class="card-footer text-center">
+        <a asp-action="Index" class="btn btn-outline-primary">Înapoi la listă</a>
+        <a asp-action="Edit" asp-route-id="@Model.ID_SEDINTA" class="btn btn-outline-warning">Editează</a>
+        <a asp-action="Delete" asp-route-id="@Model.ID_SEDINTA" class="btn btn-outline-danger">Șterge</a>
+    </div>
+</div>

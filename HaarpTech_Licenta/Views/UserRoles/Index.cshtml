@@ -1,0 +1,44 @@
+﻿@using HaarpTech_Licenta.Models
+@model List<HaarpTech_Licenta.Models.UserRolesViewModel>
+@{
+    ViewData["Title"] = "Roluri Utilizator";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html lang="en" data-bs-theme="dark">
+<body>
+    <h1>@ViewData["Title"]</h1>
+    <hr />
+    <br />
+            <div class="border border-2 p-5 table-container table-responsive custom-table-wrapper">
+                <table class="table" style="min-width: 1200px;">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nume</th>
+                            <th>Prenume</th>
+                            <th>Email</th>
+                            <th>Roluri</th>
+                                <th>Acțiune</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@user.FirstName</td>
+                                <td>@user.LastName</td>
+                                <td>@user.Email</td>
+                                <td>@string.Join(" , ", user.Roles.ToList())</td>
+                                <td>
+                                    <a class="btn btn-primary" asp-controller="UserRoles" asp-action="Manage" asp-route-userId="@user.UserId">Administrare Roluri</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        <footer class="text-center text-light mt-4">
+            <p>&copy; 2025 - HaarpTech_Licenta - <a href="/Privacy" class="text-info">Privacy</a></p>
+        </footer>
+</body>
+</html>

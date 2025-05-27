@@ -1,0 +1,81 @@
+﻿@model HaarpTech_Licenta.Models.Sedinta
+@{
+    ViewData["Title"] = "Editare Ședință";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID_SEDINTA" />
+            <input type="hidden" asp-for="ID_USER" />
+            <input type="hidden" asp-for="ID_CERERE" />
+
+
+            <div class="form-group">
+                <label asp-for="DataSedinta" class="control-label"></label>
+                <input asp-for="DataSedinta" class="form-control" />
+                <span asp-validation-for="DataSedinta" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Subiect" class="control-label"></label>
+                <input asp-for="Subiect" class="form-control" />
+                <span asp-validation-for="Subiect" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Descriere" class="control-label"></label>
+                <textarea asp-for="Descriere" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Descriere" class="text-danger"></span>
+            </div>
+
+            <!-- Logică pentru Status (ca în Create) -->
+            @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+            {
+                <div class="form-group">
+                    <label asp-for="StatusSedinta" class="control-label"></label>
+                    <select asp-for="StatusSedinta" class="form-control">
+                        <option value="Planificată">Planificată</option>
+                        <option value="Confirmată">Confirmată</option>
+                        <option value="Anulată">Anulată</option>
+                    </select>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="StatusSedinta" class="control-label"></label>
+                    <input asp-for="StatusSedinta" class="form-control" readonly />
+                    <span asp-validation-for="StatusSedinta" class="text-danger"></span>
+                </div>
+            }
+
+            <!-- Restul câmpurilor -->
+            <div class="form-group">
+                <label asp-for="Locatie" class="control-label"></label>
+                <input asp-for="Locatie" class="form-control" />
+                <span asp-validation-for="Locatie" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TipSedinta" class="control-label"></label>
+                <select asp-for="TipSedinta" class="form-control">
+                    <option value="Față în față">Față în față</option>
+                    <option value="Online">Online</option>
+                    <option value="Telefonic">Telefonic</option>
+                </select>
+                <span asp-validation-for="TipSedinta" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">Salvează modificări</button>
+                <a asp-action="Index" asp-controller="Sedinta" class="btn btn-secondary">Anulează</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

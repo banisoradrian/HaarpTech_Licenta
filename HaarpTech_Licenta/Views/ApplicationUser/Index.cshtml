@@ -1,0 +1,73 @@
+﻿@model IEnumerable<HaarpTech_Licenta.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Meniu Utilizatori";
+}
+<html lang="en" data-bs-theme="dark">
+    <head>
+            <link rel="stylesheet" href="~/Index.styles.css" asp-append-version="true" />
+    </head>
+<body>
+    <h1></h1>
+    <p>
+        <a class="btn btn-primary" asp-controller="ApplicationUser" asp-action="Create"> <i class="bi bi-plus-circle"> </i> </a>
+    </p>
+    @functions 
+    {
+        public string GetDisplayValue(string value)
+        {
+            return string.IsNullOrEmpty(value) ? "-" : value;
+        }
+    }
+    <div class="border border-2 p-5 table-container table-responsive custom-table-wrapper">
+        <table class="table" style="min-width: 1200px;">
+            <thead class="table-light">
+            <tr>
+                <th> ID </th>
+                <th> Prenume </th>
+                <th> Nume </th>
+                <th> Email </th>
+                <th> Telefon </th>
+                <th> Dată creare cont</th>
+                <th> Țara </th>
+                <th> Companie  </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <th> @user.Id </th>
+                    <td> @user.FirstName </td>
+                    <td> @user.LastName </td> 
+                    <td> @user.Email </td>
+                    <td> @user.PhoneNumber </td>
+                    <td> @user.DateCreated </td>
+                    <td> @user.Country </td>
+                    <td> @GetDisplayValue(user.CompanyName) </td>  
+                    <td>
+                            <a class="btn btn-primary" asp-controller="ApplicationUser" asp-action="Edit" asp-route-id="@user.Id">
+                                <i class="bi bi-pen-fill"></i>
+                            </a>
+
+                            <a class="btn btn-warning" asp-controller="ApplicationUser" asp-action="Details" asp-route-id="@user.Id">
+                                <i class="bi bi-info-circle"></i>
+                            </a> 
+
+                            <a class="btn btn-danger" asp-controller="ApplicationUser" asp-action="Delete" asp-route-id="@user.Id">
+                                <i class="bi bi-trash3-fill"></i>
+                            </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+</body>
+</html>
+
+<footer class="text-center text-light mt-4">
+    <p>&copy; 2025 - HaarpTech_Licenta - <a href="/Privacy" class="text-info">Privacy</a></p>
+</footer>
+
+
