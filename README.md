@@ -107,3 +107,6 @@ Pagina de start
 Nu mi-a iesit sa fac un serviciu care sa schimbe parola utilizatorului , dar am adaugat acest mesaj pentru a specifica acest lucru
 ![image](https://github.com/user-attachments/assets/dbb96b66-97bd-444e-83d8-49ca2d96bc4d)
 
+
+
+# Toate drepturile sunt rezervate
