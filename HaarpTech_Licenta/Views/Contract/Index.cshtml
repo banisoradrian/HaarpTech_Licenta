@@ -1,0 +1,136 @@
+﻿@model IEnumerable<HaarpTech_Licenta.Models.Contract>
+
+@{
+    ViewData["Title"] = "Listă Contracte";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary mb-0"><i class="bi bi-file-earmark-text"></i> @ViewData["Title"]</h2>
+        <div class="w-50">
+            <input type="text" id="searchInput" class="form-control" placeholder="Caută în contracte..." />
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-table"></i> Detalii Contracte</h4>
+        </div>
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Nr. Contract</th>
+                                <th>Beneficiar</th>
+                                <th>Data Contract</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="contractTable">
+                            @foreach (var contract in Model)
+                            {
+                                <tr class="contract-row">
+                                    <td>@contract.NumarContract</td>
+                                    <td>
+                                        @(contract.NumeBeneficiar?.Length > 25
+                                                    ? contract.NumeBeneficiar.Substring(0, 25) + "..."
+                                                    : contract.NumeBeneficiar)
+                                    </td>
+                                    <td>@contract.DataContract.ToString("dd.MM.yyyy")</td>
+
+                                    <td>
+                                        @if (User.IsInRole("DepartamenFinanciar") || User.IsInRole("Admin"))
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@contract.ID_CONTRACT" class="btn btn-primary btn-sm me-1" title="Editează">
+                                                <i class="bi bi-pen-fill"></i>
+                                            </a>
+
+                                            <a asp-action="Details" asp-route-id="@contract.ID_CONTRACT" class="btn btn-warning btn-sm me-1" title="Detalii">
+                                                <i class="bi bi-info-circle-fill"></i>
+                                            </a>
+
+                                            <a asp-action="Delete" asp-route-id="@contract.ID_CONTRACT" class="btn btn-danger btn-sm me-1" title="Șterge">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </a>
+
+                                            <a asp-action="PrintContractPdf" asp-route-id="@contract.ID_CONTRACT" class="btn btn-success btn-sm" title="Descarcă PDF">
+                                                <i class="bi bi-file-pdf-fill"></i>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="Details" asp-route-id="@contract.ID_CONTRACT" class="btn btn-warning btn-sm me-1" title="Detalii">
+                                                <i class="bi bi-info-circle-fill"></i>
+                                            </a>
+
+                                            <a asp-action="PrintContractPdf" asp-route-id="@contract.ID_CONTRACT" class="btn btn-success btn-sm" title="Descarcă PDF">
+                                                <i class="bi bi-file-pdf-fill"></i>
+                                            </a>
+                                        }
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="card-footer bg-light py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">@Model.Count() înregistrări găsite</span>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">Nu există contracte înregistrate.</div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: translateX(4px);
+            transition: transform 0.2s ease;
+        }
+
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        .table th {
+            background-color: #e9f7fe;
+            color: #0d6efd;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        #searchInput {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 20px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            var term = this.value.trim().toLowerCase();
+            document.querySelectorAll('.contract-row').forEach(function(row) {
+                var text = row.innerText.toLowerCase();
+                row.style.display = text.includes(term) ? '' : 'none';
+            });
+        });
+    </script>
+}

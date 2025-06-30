@@ -1,0 +1,111 @@
+﻿@model HaarpTech_Licenta.Models.NotaComanda
+
+@{
+    ViewData["Title"] = "Detalii Notă Comandă";
+}
+
+<div class="card mx-auto mt-5 shadow" style="max-width: 900px;">
+    <div class="card-header bg-primary text-white text-center">
+        <h3><i class="bi bi-receipt"></i> @ViewData["Title"]</h3>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+
+            <dt class="col-sm-4">Denumire:</dt>
+            <dd class="col-sm-8">@Model.Denumire</dd>
+
+            <dt class="col-sm-4">Număr Notă:</dt>
+            <dd class="col-sm-8">@Model.NumarComanda</dd>
+
+            <dt class="col-sm-4">Destinatar:</dt>
+            <dd class="col-sm-8">@Model.Destinatar</dd>
+
+            <dt class="col-sm-4">Data Notă:</dt>
+            <dd class="col-sm-8">@Model.DataNota.ToString("dd MMMM yyyy, HH:mm")</dd>
+
+            <dt class="col-sm-4">Data Emiterii:</dt>
+            <dd class="col-sm-8">@Model.DataEmiterii.ToString("dd MMMM yyyy, HH:mm")</dd>
+
+            <dt class="col-sm-4">Activitate:</dt>
+            <dd class="col-sm-8">@Model.Activitate</dd>
+
+            <dt class="col-sm-4">Cantitate:</dt>
+            <dd class="col-sm-8">@Model.Cantitate</dd>
+
+            <dt class="col-sm-4">U.M.:</dt>
+            <dd class="col-sm-8">@Model.Um</dd>
+
+            <dt class="col-sm-4">Preț Fără TVA:</dt>
+            <dd class="col-sm-8">@Model.PretTotalFaraTva.ToString("C2")</dd>
+
+            <dt class="col-sm-4">Preț cu TVA:</dt>
+            <dd class="col-sm-8">@Model.PretTotalTva.ToString("C2")</dd>
+
+            <dt class="col-sm-4">Termen Livrare (zile):</dt>
+            <dd class="col-sm-8">@Model.TermenLivrare</dd>
+
+            <dt class="col-sm-4">IBAN:</dt>
+            <dd class="col-sm-8">@Model.Iban</dd>
+
+            <dt class="col-sm-4">Bancă:</dt>
+            <dd class="col-sm-8">@Model.Banca</dd>
+
+            <dt class="col-sm-4">Număr Comandă:</dt>
+            <dd class="col-sm-8">@Model.NumarComanda</dd>
+
+        </dl>
+    </div>
+    <div class="card-footer text-center">
+
+        @if (User.IsInRole("Client"))
+        {
+            
+              <a asp-action="IndexFiltred"
+                 asp-route-id="@Model.ID_CERERE"
+                 asp-controller="NotaComanda"
+                 class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left-circle"></i> Înapoi la listă
+        </a>
+        }
+        else
+        {
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Înapoi la listă
+            </a>
+        }
+        
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Consultant") || User.IsInRole("DepartamentFinanciar"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.ID_NOTA_COMANDA" class="btn btn-outline-warning ms-2">
+                Editează
+            </a>
+
+            <a asp-action="Delete" asp-route-id="@Model.ID_NOTA_COMANDA" class="btn btn-outline-danger ms-2">
+                Șterge
+            </a>
+        }
+       
+        <a asp-action="PrintPdf" asp-route-id="@Model.ID_NOTA_COMANDA" class="btn btn-outline-success ms-2">
+             Descarcă PDF
+        </a>
+        
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 15px;
+        }
+
+        dt {
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        dd {
+            margin-bottom: 1rem;
+        }
+    </style>
+}

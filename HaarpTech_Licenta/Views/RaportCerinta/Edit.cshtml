@@ -63,7 +63,8 @@
                         <span asp-validation-for="StatusOferta" class="text-danger"></span>
                     </div>
                 }
-                @if (User.IsInRole("ProjectManager"))
+
+                @if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
                 {
                     <div class="col-md-6">
                         <label asp-for="StatusResurse" class="form-label"></label>
@@ -89,7 +90,7 @@
             </div>
 
             <div class="mt-4 d-flex gap-2">
-                <button type="submit" class="btn btn-success"><i class="fas fa-save me-2"></i>Salvează modificări</button>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Salvează modificări</button>
                 <a asp-action="Index" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Înapoi</a>
             </div>
         </form>

@@ -9,17 +9,6 @@
         <h1 class="display-6 text-primary">
             <i class="fas fa-file-alt me-2"></i>@ViewData["Title"]
         </h1>
-        <div class="btn-group">
-            <a asp-action="Index" class="btn btn-outline-primary">
-                <i class="fas fa-arrow-left me-2"></i>Înapoi la listă
-            </a>
-            @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
-            {
-                <a asp-action="Edit" asp-route-id="@Model.ID_CERERE" class="btn btn-outline-warning">
-                    <i class="fas fa-edit me-2"></i>Editează
-                </a>
-            }
-        </div>
     </div>
 
     <div class="card shadow-lg border-0 rounded-3">
@@ -47,7 +36,7 @@
                                 <dd class="col-sm-7">@Model.VolumDeDate înregistrări</dd>
 
                                 <dt class="col-sm-5">Buget Estimat:</dt>
-                                <dd class="col-sm-7 fw-bold text-success">@Model.BugetEstimat Lei</dd>
+                                <dd class="col-sm-7 fw-bold text-success">@Model.BugetEstimat?.ToString("C2")  </dd>
                             </dl>
                         </div>
 
@@ -98,6 +87,48 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="card-footer text-center">
+            <a asp-controller="CerereOferta" asp-action="Index" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Înapoi la listă
+            </a>
+            @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+            {
+                <a asp-controller="CerereOferta" asp-action="Edit" asp-route-id="@Model.ID_CERERE" class="btn btn-outline-warning" title="Editează">
+                    <i class="fas fa-edit me-2"></i>Editează
+                </a>
+            }
+
+            <a asp-controller="CerintaProdus" asp-action="IndexFiltred" asp-route-id="@Model.ID_CERERE" class="btn btn-outline-info" title="Vizualizare Cerințe">
+                <i class="fas fa-edit me-2"></i>Vizualizare Cerințe
+            </a>
+
+            <a asp-controller="CerintaProdus" asp-action="Create" asp-route-id="@Model.ID_CERERE" class="btn btn-outline-success" title="Adaugă o cerință">
+                <i class="fas fa-edit me-2"></i>Adaugă cerință
+            </a>
+            @if (User.IsInRole("Admin") || User.IsInRole("Consultant") || User.IsInRole("DepartamentFinanciar"))
+            {
+                <a asp-controller="NotaComanda" asp-action="Create" asp-route-id="@Model.ID_CERERE" class="btn btn-outline-success" title="Adaugă o nota de comandă">
+                    <i class="fas fa-edit me-2"></i>Adaugă Notă de Comandă
+                </a>
+            }
+            <a asp-controller="NotaComanda" asp-action="IndexFiltred" asp-route-id="@Model.ID_CERERE" class="btn btn-outline-info" title="Vizualizare Notă de comandă">
+                <i class="fas fa-edit me-2"></i>Nota de comanda
+            </a>
+
+            @if (User.IsInRole("Admin") || User.IsInRole("Consultant") || User.IsInRole("DepartamentFinanciar"))
+            {
+                <a asp-controller="Contract" asp-action="Create" asp-route-id="@Model.ID_CERERE" class="btn btn-outline-info" title="Adaugă un contract">
+                    <i class="fas fa-edit me-2"></i>Adaugă Contract
+                </a>
+            }
+
+           
+                <a asp-controller="Contract" asp-action="IndexFiltred" asp-route-id="@Model.ID_CERERE" class="btn btn-outline-primary" title="Vizualizare Contract">
+                    <i class="bi bi-file-earmark-minus-fill me-2"></i>Vizualizare Contract
+                </a>
+            
+            
         </div>
     </div>
 </div>

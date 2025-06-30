@@ -1,14 +1,16 @@
 ﻿@model IEnumerable<HaarpTech_Licenta.Models.CerereOferta>
 
 @{
-    ViewData["Title"] = "Cereri Oferte";
+    if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+        ViewData["Title"] = "Cereri Oferte";
+    else
+        ViewData["Title"] = "Produse";
 }
 
 <div class="container-fluid px-4 py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="display-6 text-primary">
-            <i class="fas fa-file-invoice-dollar me-2"></i>@ViewData["Title"]
-        </h1>
+        <h2 class="display-4 fw-bold text-primary">@ViewData["Title"]</h2>
+
         <div class="w-50">
             <input type="text" id="searchInput" class="form-control"
             placeholder="Caută în cereri...">
@@ -47,7 +49,8 @@
                                         <dd class="col-sm-7">@item.VolumDeDate Inregistrari</dd>
 
                                         <dt class="col-sm-5">Buget Estimat:</dt>
-                                        <dd class="col-sm-7 fw-bold text-success"> @item.BugetEstimat  Lei </dd>
+                                        <dd class="col-sm-7 fw-bold text-success">@item.BugetEstimat?.ToString("C2")
+                                       </dd>
                                     </dl>
                                 </div>
 
@@ -108,7 +111,7 @@
                                         </a>
 
                                         <a asp-controller="CerereOferta" asp-action="Details" asp-route-id="@item.ID_CERERE"
-                                        class="btn btn-sm btn-outline-info">
+                                        class="btn btn-sm btn-outline-warning">
                                             <i class="fas fa-info-circle me-2"></i>Detalii
                                         </a>
 
@@ -120,7 +123,7 @@
                                         <div class="btn-group">
                                             <a asp-controller="Sedinta" asp-action="Create" asp-route-id="@item.ID_CERERE"
                                             class="btn btn-sm btn-outline-success">
-                                                <i class="fas fa-trash-alt me-2"></i>Programează ședință
+                                                <i class="bi bi-bag-plus-fill me-2"></i>Programează ședință
                                             </a>
                                         </div>
                                     </div>
@@ -128,9 +131,14 @@
                                 else
                                 {
                                     <div class="btn-group">
+                                         <a asp-controller="CerereOferta" asp-action="Details" asp-route-id="@item.ID_CERERE"
+                                        class="btn btn-sm btn-outline-warning">
+                                            <i class="fas fa-info-circle me-2"></i>Detalii
+                                        </a>
+
                                         <a asp-controller="Sedinta" asp-action="Create" asp-route-id="@item.ID_CERERE"
                                         class="btn btn-sm btn-outline-success">
-                                            <i class="fas fa-trash-alt me-2"></i>Programează ședință
+                                        <i class="bi bi-bag-plus-fill me-2"></i>Programează ședință
                                         </a>
                                     </div>
                                 }

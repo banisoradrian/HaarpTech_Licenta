@@ -18,7 +18,7 @@ namespace HaarpTech_Licenta.Models
         public DateTime? DataCereri { get; set; }
 
         [Display(Name = "Preț")]
-        [Column(TypeName = "decimal(10,2)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal? Pret { get; set; }
 
         [Display(Name = "Descriere")]
@@ -67,12 +67,14 @@ namespace HaarpTech_Licenta.Models
         public string SpecificatiiTehnice { get; set; }
 
         [Display(Name = "Buget Estimat")]
+        [Range(0, int.MaxValue, ErrorMessage = "Bugetul nu poate fi negativ.")]
         public decimal? BugetEstimat { get; set; }
 
         [Display(Name = "Data Ofertei")]
         public DateTime? DataOfertei { get; set; }
 
         [Display(Name = "Volum de Date")]
+        [Range(0, int.MaxValue, ErrorMessage = "Volumul de date nu poate fi negativ.")]
         public int? VolumDeDate { get; set; }
 
         [Display(Name = "Status Ofertă")]
@@ -80,5 +82,7 @@ namespace HaarpTech_Licenta.Models
 
         [Display(Name = "Tip Ofertă")]
         public string TipOferta { get; set; }
+
+        public ICollection<CerintaProdus> ColetieCerintaProduse{ get; set; }
     }
 }

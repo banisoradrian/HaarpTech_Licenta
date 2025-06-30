@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace HaarpTech_Licenta.Controllers
 {
+    [Authorize]
     [Authorize(Roles = "Admin")]
     public class ApplicationUserController : Controller
     {

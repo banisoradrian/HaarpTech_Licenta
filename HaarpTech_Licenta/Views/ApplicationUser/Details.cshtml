@@ -1,7 +1,7 @@
 ﻿@model HaarpTech_Licenta.Models.ApplicationUser
 
 @{
-    ViewData["Title"] = "Detali";
+    ViewData["Title"] = "Detalii";
 }
 
 @functions
@@ -11,7 +11,7 @@
         return string.IsNullOrEmpty(value) ? "-" : value;
     }
  }
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="white">
 
 <body>
 <h4 class="align-content-center">@ViewData["Title"] pentru contul : @Model.LastName  @Model.FirstName</h4>

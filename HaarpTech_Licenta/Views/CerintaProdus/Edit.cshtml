@@ -1,0 +1,109 @@
+﻿@model HaarpTech_Licenta.Models.CerintaProdus
+
+@{
+    ViewData["Title"] = "Editează Cerința Produsului";
+}
+
+<div class="card shadow mt-5">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="bi bi-pencil-square me-2"></i>@ViewData["Title"]</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post" class="row g-3 needs-validation" novalidate>
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.ID_CERINTA)
+            @Html.HiddenFor(model => model.ID_CERERE)
+
+            <div class="col-md-6">
+                <label asp-for="DataElaborare" class="form-label">Data Elaborare</label>
+                <input asp-for="DataElaborare"
+                type="datetime-local"
+                class="form-control"
+                required />
+                <div class="invalid-feedback">
+                    Vă rugăm să completați data elaborării.
+                </div>
+                <span asp-validation-for="DataElaborare" class="text-danger small"></span>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="DescriereDetaliata" class="form-label">Descriere Detaliată</label>
+                <textarea asp-for="DescriereDetaliata"
+                class="form-control"
+                rows="4"
+                required></textarea>
+                <div class="invalid-feedback">
+                    Vă rugăm să furnizați o descriere detaliată.
+                </div>
+                <span asp-validation-for="DescriereDetaliata" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Prioritate" class="form-label">Prioritate</label>
+                <select asp-for="Prioritate"
+                class="form-select"
+                required>
+                    <option value="">--Selectați--</option>
+                    <option>Critică</option>
+                    <option>Ridicată</option>
+                    <option>Medie</option>
+                    <option>Scăzută</option>
+                </select>
+                <div class="invalid-feedback">
+                    Selectați o prioritate.
+                </div>
+                <span asp-validation-for="Prioritate" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="StatusCerinta" class="form-label">Status Cerință</label>
+                <select asp-for="StatusCerinta"
+                class="form-select"
+                required>
+                    <option value="">--Selectați--</option>
+                    <option>Nouă</option>
+                    <option>În lucru</option>
+                    <option>Rezolvată</option>
+                    <option>Respinsă</option>
+                    <option>Amânată</option>
+                </select>
+                <div class="invalid-feedback">
+                    Selectați un status pentru cerință.
+                </div>
+                <span asp-validation-for="StatusCerinta" class="text-danger small"></span>
+            </div>
+
+            <div class="col-12 d-flex justify-content-end mt-4 gap-2">
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-save2 me-2"></i>Salvează modificările
+                </button>
+                <a asp-action="IndexFiltred" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-circle me-2"></i>Anulează
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
+    <script>
+        // Bootstrap custom validation
+        (function () {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}

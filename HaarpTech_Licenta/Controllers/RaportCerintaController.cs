@@ -1,10 +1,12 @@
 ﻿using HaarpTech_Licenta.Models;
 using HaarpTech_Licenta.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace HaarpTech_Licenta.Controllers
 {
+    [Authorize(Roles = "Admin,Consultant")]
     public class RaportCerintaController : Controller
     {
         private readonly IRaportCerintaRepository _raportCerintaRepository;
@@ -16,7 +18,7 @@ namespace HaarpTech_Licenta.Controllers
             _logger = logger;
         }
 
-        [HttpGet("raportcerinta/index")]
+        [HttpGet("RaportCerinta/Index")]
         public async Task<IActionResult> Index()
         {
             var raportCerinta = await _raportCerintaRepository.GetAllAsync()
@@ -25,7 +27,16 @@ namespace HaarpTech_Licenta.Controllers
         }
 
 
-        [HttpGet("raportcerinta/create")]
+        [HttpGet("RaportCerinta/IndexRaportFiltru")]
+        public async Task<IActionResult> IndexRaportFiltru(string id)
+        {
+            var raportCerintaRepository = await _raportCerintaRepository.GetAllByIdAsync(id);
+
+            return View("Index", raportCerintaRepository);
+        }
+
+
+        [HttpGet("RaportCerinta/Create")]
         public IActionResult Create(string id)
         {
             var model = new RaportCerinta
@@ -36,7 +47,7 @@ namespace HaarpTech_Licenta.Controllers
         }
 
 
-        [HttpPost("raportcerinta/create")]
+        [HttpPost("RaportCerinta/Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RaportCerinta model)
         {
@@ -79,7 +90,7 @@ namespace HaarpTech_Licenta.Controllers
             return View(user);
         }
 
-        [HttpGet("raportcerinta/edit")]
+        [HttpGet("RaportCerinta/Edit")]
         public async Task<IActionResult> Edit(string id)
         {
             var sedinta = await _raportCerintaRepository.GetByIdAsync(id);
@@ -88,7 +99,7 @@ namespace HaarpTech_Licenta.Controllers
             return View(sedinta);
         }
 
-        [HttpPost("raportcerinta/edit")]
+        [HttpPost("RaportCerinta/Edit")]
         public async Task<IActionResult> Edit(RaportCerinta raportCerinta)
         {
             if (!ModelState.IsValid)

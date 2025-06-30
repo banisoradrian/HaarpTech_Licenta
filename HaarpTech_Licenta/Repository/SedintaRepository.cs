@@ -9,6 +9,16 @@ using System.Security.Claims;
 
 namespace HaarpTech_Licenta.Repository
 {
+    public interface ISedintaRepository
+    {
+        Task<bool> AddSedintaAsync(Sedinta sedinta);
+        Task<IEnumerable<Sedinta>> GetAllAsync();
+        Task<Sedinta> GetByIdAsync(string idSedinta);
+        Task<bool> UpdateSedintaAsync(Sedinta sedinta);
+        Task<bool> DeleteSedintaAsync(string idSedinta);
+        Task<IEnumerable<Sedinta>> GetAllRaportCerintaAsync(string id);
+    }
+
     public class SedintaRepository : ISedintaRepository
     {
         private readonly IDatabaseConnection _dbConnection;
@@ -41,6 +51,53 @@ namespace HaarpTech_Licenta.Repository
                 sql,
                 new { IdSedinta = id }
             );
+        }
+
+        public async Task<IEnumerable<Sedinta>> GetAllAsync()
+        {
+            using var connection = _dbConnection.GetConnection();
+            var user = _httpContextAccessor.HttpContext?.User;
+            var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (connection.State != ConnectionState.Open)
+                connection.Open();
+
+            if (user == null)
+                return Enumerable.Empty<Sedinta>();
+
+            if (user.IsInRole("Admin") || user.IsInRole("Consultant"))
+            {
+                const string sql = @"SELECT 
+                                           ID_SEDINTA,
+                                           DATA_SEDINTA    AS DataSedinta,
+                                           SUBIECT         AS Subiect,
+                                           DESCRIERE       AS Descriere,
+                                           STATUS_SEDINTA  AS StatusSedinta,
+                                           LOCATIE         AS Locatie,
+                                           TIP_SEDINTA     AS TipSedinta
+                                      FROM SED_SEDINTE_V
+                                   ORDER BY DataSedinta DESC";
+
+                return await connection.QueryAsync<Sedinta>(sql);
+            }
+            else
+            {
+                const string sql = @"SELECT
+                                           ID_SEDINTA,
+                                           DATA_SEDINTA    AS DataSedinta,
+                                           SUBIECT         AS Subiect,
+                                           DESCRIERE       AS Descriere,
+                                           STATUS_SEDINTA  AS StatusSedinta,
+                                           LOCATIE         AS Locatie,
+                                           TIP_SEDINTA     AS TipSedinta
+                                      FROM SED_SEDINTE_V 
+                                     WHERE ID_USER = @ID_USER
+                                  ORDER BY DataSedinta DESC";
+                return await connection.QueryAsync<Sedinta>(
+                    sql,
+                    new { ID_USER = userId }
+                );
+            }
         }
 
         public async  Task<bool> AddSedintaAsync(Sedinta sedinta)
@@ -82,46 +139,45 @@ namespace HaarpTech_Licenta.Repository
             }
         }
 
-        public async Task<IEnumerable<Sedinta>> GetAllAsync()
+        
+
+        public async Task<IEnumerable<Sedinta>> GetAllRaportCerintaAsync(string id)
         {
             using var connection = _dbConnection.GetConnection();
-            var user = _httpContextAccessor.HttpContext?.User;
-            var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
-
             if (connection.State != ConnectionState.Open)
                 connection.Open();
 
-            if (user.IsInRole("Admin") || user.IsInRole("Consultant"))
-            {
-                return await connection.QueryAsync<Sedinta>(@"SELECT 
-                                                                          ID_SEDINTA,
-                                                                          DATA_SEDINTA    AS DataSedinta,
-                                                                          SUBIECT         AS Subiect,
-                                                                          DESCRIERE       AS Descriere,
-                                                                          STATUS_SEDINTA  AS StatusSedinta,
-                                                                          LOCATIE         AS Locatie,
-                                                                          TIP_SEDINTA     AS TipSedinta
-                                                                    FROM SED_SEDINTE_V");
-            }
-            else
-            {
-                const string sql = @"SELECT
-                                          ID_SEDINTA,
-                                          DATA_SEDINTA    AS DataSedinta,
-                                          SUBIECT         AS Subiect,
-                                          DESCRIERE       AS Descriere,
-                                          STATUS_SEDINTA  AS StatusSedinta,
-                                          LOCATIE         AS Locatie,
-                                          TIP_SEDINTA     AS TipSedinta
-                                      FROM SED_SEDINTE_V 
-                                   WHERE ID_SEDINTA = @ID_SEDINTA";
+            const string sql = @"
+                                 SELECT 
+	                                   RC.ID_RAPORT	
+	                                  ,RC.ID_SEDINTA
+	                                  ,RC.DESCRIERE		 AS Descriere
+	                                  ,RC.STATUS_OFERTA	 AS StatusOferta
+	                                  ,RC.PRIORITATE	 AS Prioritate
+	                                  ,RC.STATUS_RESURSE AS StatusResurse
+	                                  ,RC.STATUS_OFERTA  AS StatusOferta
+	                                  ,SS.ID_SEDINTA
+	                                  ,SS.ID_CERERE		
+                                  FROM SED_SEDINTE_V SS
+                                  JOIN RAP_RAPORT_CERINTE_V RC
+                                    ON SS.ID_SEDINTA = RC.ID_SEDINTA
+                                 WHERE SS.ID_SEDINTA = @IdSedinta";
 
-                return await connection.QueryAsync<Sedinta>(
-                    sql,
-                    new { ID_SEDINTA = userId }
-                );
+            var result = await connection.QueryAsync<Sedinta, RaportCerinta, Sedinta>(
+            sql,
+            map: (sedinta, raportCerinta) =>
+            {
+                //sedinta.RaportCerinte = raportCerinta;
+                raportCerinta.Sedinte = sedinta;
+                return sedinta;
+            },
+            splitOn: "ID_SEDINTA",
+            param: new { IdSedinta = id }
+            );
+
+                return result;
             }
-        }
+
 
         public async Task<bool> UpdateSedintaAsync(Sedinta s)
         {

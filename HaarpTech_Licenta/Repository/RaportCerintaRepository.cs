@@ -8,6 +8,16 @@ using HaarpTech_Licenta.Repository;
 
 namespace HaarpTech_Licenta.Repository
 {
+    public interface IRaportCerintaRepository
+    {
+        Task<bool> AddRaportCerintaAsync(RaportCerinta raportCerinta);
+        Task<IEnumerable<RaportCerinta>> GetAllAsync();
+        Task<RaportCerinta> GetByIdAsync(string idRaportCerinta);
+        Task<IEnumerable<RaportCerinta>> GetAllByIdAsync(string idRaportCerinta);
+        Task<bool> UpdateRaportCerintaAsync(RaportCerinta raportCerinta);
+        Task<bool> DeleteRaportCerintaAsync(string idRaportCerinta);
+    }
+
     public class RaportCerintaRepository : IRaportCerintaRepository
     {
         private readonly IDatabaseConnection _dbConnection;
@@ -41,6 +51,31 @@ namespace HaarpTech_Licenta.Repository
             );
         }
 
+        public async Task<IEnumerable<RaportCerinta>> GetAllByIdAsync(string idRaportCerinta)
+        {
+            using var conn = _dbConnection.GetConnection();
+            if (conn.State != ConnectionState.Open)
+                conn.Open();
+
+            const string sql = @"SELECT 
+                                       ID_RAPORT,
+                                       DESCRIERE      AS Descriere,
+                                       STATUS_RAPORT  AS StatusRaport,
+                                       PRIORITATE     AS Prioritate,
+                                       STATUS_RESURSE  AS StatusResurse,
+                                       STATUS_OFERTA   AS StatusOferta,
+                                       ID_SEDINTA
+                                   FROM RAP_RAPORT_CERINTE_V
+                                  WHERE ID_SEDINTA = @IdSedinta";
+
+            return await conn.QueryAsync<RaportCerinta>(
+                sql,
+                new { IdSedinta = idRaportCerinta }
+            );
+        }
+
+
+
         public async Task<bool> AddRaportCerintaAsync(RaportCerinta raportCerinta)
         {
             try
@@ -59,7 +94,9 @@ namespace HaarpTech_Licenta.Repository
                         i_DESCRIERE = raportCerinta.Descriere ,
                         i_STATUS_RAPORT = raportCerinta.StatusRaport ,
                         i_PRIORITATE = raportCerinta.Prioritate ,
-                        i_ID_SEDINTA = raportCerinta.ID_SEDINTA
+                        i_ID_SEDINTA = raportCerinta.ID_SEDINTA,
+                        i_STATUS_RESURSE = raportCerinta.StatusResurse,
+                        i_STATUS_OFERTA = raportCerinta.StatusOferta
                     };
 
                     int affectedRows = await connection.ExecuteAsync(

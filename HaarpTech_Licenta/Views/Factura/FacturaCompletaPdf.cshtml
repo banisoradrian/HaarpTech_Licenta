@@ -1,0 +1,214 @@
+﻿@model HaarpTech_Licenta.Models.FacturaCompletaViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Factura</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            margin: auto;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .company-details {
+            width: 60%;
+        }
+
+            .company-details h1 {
+                margin: 0;
+                font-size: 24px;
+                color: #0056b3;
+            }
+
+        .invoice-details {
+            text-align: right;
+            font-size: 14px;
+        }
+
+            .invoice-details .label {
+                font-weight: bold;
+            }
+
+        .client-section {
+            margin-bottom: 20px;
+        }
+
+            .client-section h2 {
+                font-size: 16px;
+                margin-bottom: 10px;
+                border-bottom: 1px solid #ccc;
+                padding-bottom: 5px;
+                color: #0056b3;
+            }
+
+        .client-info p {
+            margin: 2px 0;
+        }
+
+        table.items {
+            width: 100%;
+            border-collapse: collapse;s
+            margin-bottom: 20px;
+        }
+
+            table.items th, table.items td {
+                border: 1px solid #ccc;
+                padding: 8px;
+            }
+
+            table.items th {
+                background-color: #f0f0f0;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            table.items tr:nth-child(even) {
+                background-color: #fafafa;
+            }
+
+            table.items td {
+                vertical-align: top;
+            }
+
+        .right {
+            text-align: right;
+        }
+
+        .totals {
+            width: 40%;
+            float: right;
+            border-collapse: collapse;
+        }
+
+            .totals td {
+                padding: 8px;
+            }
+
+            .totals tr td:first-child {
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .totals tr.total-row td {
+                border-top: 2px solid #333;
+                font-weight: bold;
+            }
+
+        .logo-img {
+            max-width: 150px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="company-details">
+                <h1>Haarp Tech S.R.L.</h1>
+                <div>
+                    <img src="~/images/HaarpTechLogo1.png" asp-append-version="true" alt="Logo Haarp Tech" class="logo-img" />
+                </div>
+                <p>
+                    Str.Mihai Eminescu 17, Bacău, Caraclău, România
+               </p>
+                <p>CUI: 17246849 | Reg.Com.: r. J40/24/2025</p>
+                <p>Telefon:  +40 743 311 651 | Email: contact@haarpptech.ro | Email: banisor.adrian@yahoo.com 
+                </p>
+            </div>
+          
+        </div>
+
+        <div class="invoice-details">
+            <p><span class="label">Factura Nr:</span> @Model.Factura.SeriaFactura-@Model.Factura.NumarFactura</p>
+            <p><span class="label">Data:</span> @Model.Factura.DataEmitere.ToString("dd.MM.yyyy")</p>
+            <p><span class="label">Monedă:</span> @Model.Factura.Moneda</p>
+        </div>
+
+        <div class="client-section">
+            <h2>Date Client</h2>
+            @if (Model.Client != null)
+            {
+                <div class="client-info">
+                    <p>Denumire Fiscală : <strong>@Model.Client.DenumireFiscala</strong></p>
+                    <p>CUI: @Model.Client.Cui | Reg.Com.: @Model.Client.NrRegCom</p>
+                    <p>Sediu: @Model.Client.Seduiu, @Model.Client.Judet, @Model.Client.Tara</p>
+                    <p>IBAN: @Model.Client.ContIban | Banca: @Model.Client.Banca</p>
+                    <p>Tel: @Model.Client.Telefon | Email: @Model.Client.Email</p>
+                </div>
+            }
+            else
+            {
+                <p><em>Date client indisponibile</em></p>
+            }
+        </div>
+
+        <table class="items">
+            <thead>
+                <tr>
+                    <th style="width:5%">Nr. Crt</th>
+                    <th style="width:50%">Produs / Serviciu</th>
+                    <th style="width:10%">UM</th>
+                    <th style="width:10%">Cantitate</th>
+                    <th style="width:12%" class="right">Valoare Netă</th>
+                    <th style="width:13%" class="right">Valoare TVA</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.ElementeFactura?.Any() == true)
+                {
+                    foreach (var item in Model.ElementeFactura)
+                    {
+                        <tr>
+                            <td>@item.NrCrt</td>
+                            <td>@item.DenumireProdus</td>
+                            <td>@item.Um</td>
+                            <td class="right">@item.Cantitate</td>
+                            <td class="right">@item.ValoareFaraTva.ToString("N2")</td>
+                            <td class="right">@item.ValoareCuTva.ToString("N2")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="6" class="text-center">Nu există articole.</td></tr>
+                }
+            </tbody>
+        </table>
+
+        <table class="totals">
+            <tr>
+                <td>Total Fără TVA:</td>
+                <td class="right">@Model.Factura.TotalFaraTva?.ToString("N2")</td>
+            </tr>
+            <tr>
+                <td>TVA (19%):</td>
+                <td class="right">@Model.Factura.TotalCuTva?.ToString("N2")</td>
+            </tr>
+            <tr class="total-row">
+                <td>Total de plată:</td>
+                <td class="right">@Model.Factura.TotalFactura?.ToString("N2")</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

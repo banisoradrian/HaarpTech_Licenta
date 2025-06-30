@@ -2,12 +2,18 @@
 @{
     ViewData["Title"] = "Meniu Utilizatori";
 }
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="white">
     <head>
             <link rel="stylesheet" href="~/Index.styles.css" asp-append-version="true" />
+    <style>
+        .custom-table-wrapper {
+            padding-right: 100px !important;
+        }
+    </style>
     </head>
 <body>
-    <h1></h1>
+    <h1>@ViewData["Title"]</h1>
+    <hr />
     <p>
         <a class="btn btn-primary" asp-controller="ApplicationUser" asp-action="Create"> <i class="bi bi-plus-circle"> </i> </a>
     </p>
@@ -65,9 +71,3 @@
     </div>
 </body>
 </html>
-
-<footer class="text-center text-light mt-4">
-    <p>&copy; 2025 - HaarpTech_Licenta - <a href="/Privacy" class="text-info">Privacy</a></p>
-</footer>
-
-

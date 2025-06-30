@@ -1,0 +1,19 @@
+﻿@model HaarpTech_Licenta.Models.Contract
+@{
+    ViewData["Title"] = "Ștergere Contract";
+}
+
+<h2>Confirmare Ștergere Contract</h2>
+<div class="alert alert-danger">
+
+    <p>Sigur doriți să ștergeți Contractul: <strong>@Model.NumeBeneficiar</strong> </p>
+    <p>Numar Contract : <strong>@Model.NumarContract</strong> </p>
+
+</div>
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="ID_CONTRACT" />
+    <button type="submit" class="btn btn-danger">Șterge</button>
+    <a asp-action="Index" class="btn btn-secondary">Anulează</a>
+</form>
+
+

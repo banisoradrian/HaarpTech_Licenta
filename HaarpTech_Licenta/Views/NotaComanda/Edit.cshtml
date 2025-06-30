@@ -1,0 +1,158 @@
+﻿@model HaarpTech_Licenta.Models.NotaComanda
+
+@{
+    ViewData["Title"] = "Editează Notă Comandă";
+}
+
+<div class="card shadow mt-5 mx-auto" style="max-width: 900px;">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="bi bi-pencil-square me-2"></i>@ViewData["Title"]</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post" class="row g-3 needs-validation" novalidate>
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ID_NOTA_COMANDA)
+            @Html.HiddenFor(m => m.ID_CERERE)
+
+            <div class="col-md-6">
+                <label asp-for="Denumire" class="form-label">Denumire</label>
+                <input asp-for="Denumire" class="form-control" required />
+                <div class="invalid-feedback">
+                    Vă rugăm să completați denumirea.
+                </div>
+                <span asp-validation-for="Denumire" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Destinatar" class="form-label">Destinatar</label>
+                <input asp-for="Destinatar" class="form-control" required />
+                <div class="invalid-feedback">
+                    Vă rugăm să completați destinatarul.
+                </div>
+                <span asp-validation-for="Destinatar" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="NumarComanda" class="form-label">Numar Nota Comanda</label>
+                <input asp-for="NumarComanda" class="form-control" />
+                <span asp-validation-for="NumarComanda" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Activitate" class="form-label">Activitate</label>
+                <input asp-for="Activitate" class="form-control" required />
+                <div class="invalid-feedback">
+                    Vă rugăm să specificați activitatea.
+                </div>
+                <span asp-validation-for="Activitate" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="DataNota" class="form-label">Data Notă</label>
+                <input asp-for="DataNota" type="datetime-local" class="form-control" required />
+                <div class="invalid-feedback">
+                    Vă rugăm să completați data notei.
+                </div>
+                <span asp-validation-for="DataNota" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="DataEmiterii" class="form-label">Data Emiterii</label>
+                <input asp-for="DataEmiterii" type="datetime-local" class="form-control" required />
+                <div class="invalid-feedback">
+                    Vă rugăm să completați data emiterii.
+                </div>
+                <span asp-validation-for="DataEmiterii" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="Cantitate" class="form-label">Cantitate</label>
+                <input asp-for="Cantitate" type="number" min="0" class="form-control" required />
+                <div class="invalid-feedback">
+                    Cantitatea nu poate fi negativă.
+                </div>
+                <span asp-validation-for="Cantitate" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="Um" class="form-label">U.M.</label>
+                <input asp-for="Um" type="number" min="0" class="form-control" required />
+                <div class="invalid-feedback">
+                    U.M. nu poate fi negativă.
+                </div>
+                <span asp-validation-for="Um" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="TermenLivrare" class="form-label">Termen Livrare (zile)</label>
+                <input asp-for="TermenLivrare" type="number" min="0" class="form-control" required />
+                <div class="invalid-feedback">
+                    Termenul de livrare nu poate fi negativ.
+                </div>
+                <span asp-validation-for="TermenLivrare" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="PretTotalFaraTva" class="form-label">Preț fără TVA</label>
+                <input asp-for="PretTotalFaraTva" type="number" step="0.01" min="0" class="form-control" required />
+                <div class="invalid-feedback">
+                    Prețul fără TVA nu poate fi negativ.
+                </div>
+                <span asp-validation-for="PretTotalFaraTva" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="PretTotalTva" class="form-label">Preț cu TVA</label>
+                <input asp-for="PretTotalTva" type="number" step="0.01" min="0" class="form-control" required />
+                <div class="invalid-feedback">
+                    Prețul cu TVA nu poate fi negativ.
+                </div>
+                <span asp-validation-for="PretTotalTva" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Iban" class="form-label">IBAN</label>
+                <input asp-for="Iban" class="form-control" />
+                <span asp-validation-for="Iban" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Banca" class="form-label">Bancă</label>
+                <input asp-for="Banca" class="form-control" />
+                <span asp-validation-for="Banca" class="text-danger small"></span>
+            </div>
+
+            <div class="col-12 d-flex justify-content-end mt-4 gap-2">
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-save2 me-2"></i>Salvează modificările
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-circle me-2"></i>Anulează
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+     }
+
+    <script>
+        // Bootstrap custom validation
+        (function () {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}

@@ -1,0 +1,59 @@
+﻿@model HaarpTech_Licenta.Models.StatusTichet
+
+@{
+    ViewData["Title"] = "Detalii Tichet";
+}
+
+<div class="card mx-auto mt-5 shadow" style="max-width: 900px;">
+    <div class="card-header bg-primary text-white text-center">
+        <h3><i class="bi bi-ticket-detailed"></i> @ViewData["Title"]</h3>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+
+            <dt class="col-sm-4">Data Creare:</dt>
+            <dd class="col-sm-8">@Model.DataCreare.ToString("dd MMMM yyyy, HH:mm")</dd>
+
+            <dt class="col-sm-4">Data Finalizare:</dt>
+            <dd class="col-sm-8">@(Model.DataFinalizare?.ToString("dd MMMM yyyy, HH:mm") ?? "-")</dd>
+
+            <dt class="col-sm-4">Subiect:</dt>
+            <dd class="col-sm-8">@Model.Subiect</dd>
+
+            <dt class="col-sm-4">Descriere:</dt>
+            <dd class="col-sm-8">@Model.Descriere</dd>
+
+            <dt class="col-sm-4">Status Tichet:</dt>
+            <dd class="col-sm-8">
+                <span class="badge
+                    @(Model.Status_Tichet == "Deschis" ? "bg-info" :
+                      Model.Status_Tichet == "În curs" ? "bg-warning text-dark" :
+                      Model.Status_Tichet == "Rezolvat" ? "bg-success" :
+                      Model.Status_Tichet == "Închis" ? "bg-secondary" : "bg-light text-dark")">
+                    @Model.Status_Tichet
+                </span>
+            </dd>
+
+            <dt class="col-sm-4">Prioritate:</dt>
+            <dd class="col-sm-8">
+                <span class="badge
+                    @(Model.Prioritate == "Critică" ? "bg-danger" :
+                      Model.Prioritate == "Ridicată" ? "bg-warning text-dark" :
+                      Model.Prioritate == "Medie" ? "bg-info" :
+                      Model.Prioritate == "Scăzută" ? "bg-secondary" : "bg-light text-dark")">
+                    @Model.Prioritate
+                </span>
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer text-center">
+        <a asp-action="Index" class="btn btn-outline-secondary">Înapoi la listă</a>
+
+        @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+        {
+            <a asp-controller="StatusTichet" asp-action="Edit" asp-route-id="@Model.ID_TICHET" class="btn btn-outline-warning">Editează</a>
+            <a asp-controller="StatusTichet" asp-action="Delete" asp-route-id="@Model.ID_TICHET" class="btn btn-outline-danger">Șterge</a>
+            <a asp-controller="StatusTichet" asp-action="Assign" asp-route-id="@Model.ID_TICHET" class="btn btn-outline-success" title="Asignare"> Atribuire Angajat <i class="bi bi-person-plus"></i></a>
+        }
+    </div>
+</div>

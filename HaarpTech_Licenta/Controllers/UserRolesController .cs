@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HaarpTech_Licenta.Controllers
 {
+    [Authorize]
     [Authorize(Roles ="Admin")]
     public class UserRolesController : Controller
     {

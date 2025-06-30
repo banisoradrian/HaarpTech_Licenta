@@ -1,30 +1,463 @@
-﻿@using System.Security.Claims
-@{
-    ViewData["Title"] = "Home Page";
-    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+﻿@{
+    ViewData["Title"] = "HAARP TECH";
 }
-@model HaarpTech_Licenta.Models.CreateAccountViewModel
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff; /* Albastru primar */
+            --secondary-color: #6c757d; /* Gri secundar */
+            --text-color: #343a40; /* Culoare text */
+            --background-light: #f8f9fa; /* Fundal deschis */
+            --background-dark: #212529; /* Fundal închis pentru animație */
+            --sun-color: #ffe082; /* Culoarea soarelui */
+            --sun-glow: #ffc107; /* Glow pentru soare */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 45vh; /* Ajustează înălțimea */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            overflow: hidden; /* Asigură că ploaia și soarele nu depășesc */
+            background-color: var(--background-dark); /* Fundal închis pentru contrast cu ploaia */
+        }
+
+        .hero-content {
+            z-index: 10;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+            .hero-content h1 {
+                font-size: 3.8em;
+                margin-bottom: 0.2em;
+                font-weight: 700;
+            }
+
+            .hero-content p {
+                font-size: 1.5em;
+                max-width: 800px;
+                margin: 0 auto 1.5em auto;
+            }
+
+        .btn-custom {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8em 2em;
+            font-size: 1.1em;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-custom:hover {
+                background-color: #0056b3;
+                color: white;
+            }
+
+        /* Rain and Sun Animation */
+        .rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0; /* Începe invizibil */
+            transition: opacity 1.5s ease-in-out;
+        }
+
+            .rain.active {
+                opacity: 1;
+            }
+
+        .drop {
+            position: absolute;
+            background: rgba(173, 216, 230, 0.6); /* Light blue */
+            width: 2px;
+            height: 20px;
+            border-radius: 50%;
+            animation: rainFall 0.8s linear infinite;
+        }
+
+        @@keyframes rainFall {
+            0% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Updated Sun Styles - Smaller and Positioned on Right */
+        .sun {
+            position: absolute;
+            width: 60px; /* Smaller size */
+            height: 60px; /* Smaller size */
+            background: radial-gradient(circle, var(--sun-color), var(--sun-glow));
+            border-radius: 50%;
+            top: 10%; /* Positioned higher */
+            right: 5%; /* Positioned on right */
+            transform: scale(0); /* Începe mic și invizibil */
+            box-shadow: 0 0 30px 15px rgba(255, 193, 7, 0.7);
+            z-index: 6;
+            opacity: 0;
+            transition: transform 1.5s ease-out, opacity 1.5s ease-out;
+        }
+
+            .sun.active {
+                transform: scale(1); /* Scale to normal size */
+                opacity: 1;
+            }
+
+            /* Sun rays animation */
+            .sun::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 100%;
+                height: 100%;
+                background: radial-gradient(circle, transparent 50%, rgba(255, 255, 255, 0.2) 70%);
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                animation: sunRays 3s infinite linear;
+            }
+
+        @@keyframes sunRays {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        /* General Sections */
+        .section-padding {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5em;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            height: 100%; /* Asigură că cardurile au înălțime egală */
+            position: relative;
+            overflow: hidden;
+        }
+
+            .card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Icon styles with hover animation */
+        .service-icon {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), #0056b3);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .card:hover .service-icon {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+         
+        }
+
+        .technology-badge {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .technology-badge {
+           
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Contact form animation */
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+            
+        }
+
+        .logo-img-home {
+            width: 350px;
+            height: 120px;
+            margin-bottom: 15px;
+            /* transformă pixelii negri în albi */
+            filter: brightness(0) invert(1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-section">
+        <div class="rain" id="rainAnimation"></div>
+        <div class="sun" id="sunAnimation"></div>
+        <div class="hero-content">
+            <img src="~/images/HaarpTechLogo1.png" class="logo-img-home" alt="Logo Haarp Tech" />
+            <p>Aducem soarele în fiecare aplicație</p>
+                <a class="btn btn-custom" asp-area="" asp-controller="CerereOferta" asp-action="Index">
+                    Descoperă Produsele Noastre
+                </a>
+        </div>
+    </div>
+
+    <main role="main">
+        <section id="servicii" class="section-padding bg-light">
+            <div class="container">
+                <h2 class="section-title">Serviciile Noastre</h2>
+                <div class="row g-4">
+                    <!-- Mobile Apps -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <div class="service-icon">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    Dezvoltare Aplicații Mobile
+                                </h5>
+                                <p class="card-text">Creăm aplicații mobile performante și intuitive pentru iOS și Android, folosind tehnologii moderne.</p>
+                                <span class="technology-badge">C# - MAUI</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <!-- Desktop Apps -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <div class="service-icon">
+                                        <i class="fas fa-desktop"></i>
+                                    </div>
+                                    Dezvoltare Aplicații Desktop
+                                </h5>
+                                <p class="card-text">Soluții software robuste și personalizate pentru mediul desktop, adaptate nevoilor tale specifice.</p>
+                                <span class="technology-badge">C# - WPF</span>
+                                <span class="technology-badge">MAUI</span>
+                                <span class="technology-badge">Windows Forms</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Web Apps -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <div class="service-icon">
+                                        <i class="fas fa-globe"></i>
+                                    </div>
+                                    Dezvoltare Aplicații / Site-uri Web
+                                </h5>
+                                <p class="card-text">Dezvoltăm aplicații web scalabile și site-uri responsive, optimizate pentru performanță și experiență utilizator.</p>
+                                <span class="technology-badge">C# - ASP.NET Core</span>
+                                <span class="technology-badge">JavaScript - Angular</span>
+                                <span class="technology-badge">NextJs</span>
+                                <span class="technology-badge">Vue</span>
+                                <span class="technology-badge">React</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Database -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <div class="service-icon">
+                                        <i class="fas fa-database"></i>
+                                    </div>
+                                    Gestionare Baze de Date
+                                </h5>
+                                <p class="card-text">Proiectare, implementare și administrare eficientă a bazelor de date pentru a asigura integritatea și accesibilitatea datelor.</p>
+                                <span class="technology-badge">Microsoft SQL Server</span>
+                                <span class="technology-badge">Oracle</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cloud -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <div class="service-icon">
+                                        <i class="fas fa-cloud"></i>
+                                    </div>
+                                    Servicii Cloud
+                                </h5>
+                                <p class="card-text">Integrare și optimizare a soluțiilor în cloud pentru flexibilitate, securitate și scalabilitate maximă.</p>
+                                <span class="technology-badge">Azure</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI & Support -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <div class="service-icon">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                    Implementare Servicii AI & Suport
+                                </h5>
+                                <p class="card-text">Integrarea inteligenței artificiale în aplicațiile tale și suport continuu pentru soluțiile dezvoltate de noi.</p>
+                                <span class="technology-badge">Inteligență Artificială</span>
+                                <span class="technology-badge">Mentenanță & Suport</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="despre-noi" class="section-padding">
+    <div class="container">
+        <h2 class="section-title">Despre HAARP TECH S.R.L.</h2>
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <p>
+                    La <strong>HAARP TECH S.R.L.</strong> dezvoltăm soluții software personalizate care răspund exact nevoilor tale de business.
+                    Fie că este vorba despre aplicații <strong>web, desktop sau mobile</strong>, echipa noastră se dedică creării unui produs robust,
+                    intuitiv și scalabil.
+                </p>
+                <p>
+                    Ne mândrim cu experiența de a proiecta și optimiza <strong>baze de date</strong> (Microsoft SQL Server, Oracle)
+                    și de a implementa conectivitate complexă cu <strong>servicii cloud</strong> (Azure, AWS),
+                    asigurând securitate crescută și performanță superioară.
+                </p>
+                <p>
+                    Pentru noi, parteneriatul continuă și după predarea proiectului: oferim <strong>suport tehnic permanent</strong>,
+                    actualizări regulate și monitorizare proactivă, astfel încât soluțiile livrate să funcționeze fără întreruperi
+                    și să evolueze odată cu afacerea ta.
+                </p>
+            </div>
+            <div class="col-lg-6">
+                <img src="~/images/HaarpTechLogo1.png" class="img-fluid rounded shadow-sm" alt="Logo Haarp Tech" />
+            </div>
+        </div>
+    </div>
+</section>
 
 
-<div class="text-center">
-    <h1 class="display-4">Bun venit !</h1>
-</div> 
-<br />
-<div class="text-center">
-    <h1> link  Sedinte</h1>
-    
-    <a class="btn btn-primary" asp-controller="Sedinta" asp-action="Index" asp-route-id="@userId">
-        Index Sedinta
-    </a>
-    <br />
-    <h1> link Rapoarte Cerinte</h1>
-    <a class="btn btn-primary" asp-controller="RaportCerinta" asp-action="Index" asp-route-id="@userId">
-        Index Raport Cerinte
-    </a>
+    </main>
 
-    <h1> link  Rapoarte Cerinte</h1>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const rainContainer = document.getElementById('rainAnimation');
+            const sunElement = document.getElementById('sunAnimation');
+            const numberOfDrops = 60; // Numărul de picături de ploaie
 
-    <a class="btn btn-primary" asp-controller="CerereOferta" asp-action="Index">
-        Index Cereri Oferte
-    </a>
-</div>
+            // Funcție pentru a crea o picătură de ploaie
+            function createDrop() {
+                const drop = document.createElement('div');
+                drop.classList.add('drop');
+                drop.style.left = `${Math.random() * 100}vw`; // Poziție orizontală aleatorie
+                drop.style.animationDuration = `${0.5 + Math.random() * 0.5}s`; // Durată animație variabilă
+                drop.style.animationDelay = `${Math.random() * 5}s`; // Delay aleatoriu pentru a evita sincronizarea
+                rainContainer.appendChild(drop);
+            }
+
+            // Generează picăturile de ploaie
+            for (let i = 0; i < numberOfDrops; i++) {
+                createDrop();
+            }
+
+            // Animația de ploaie și soare
+            setTimeout(() => {
+                rainContainer.classList.add('active'); // Activează ploaia
+            }, 500); // Începe ploaia după 0.5 secunde
+
+            setTimeout(() => {
+                rainContainer.classList.remove('active'); // Oprește ploaia
+                rainContainer.style.opacity = '0'; // Asigură opacitate 0 pentru a dispărea complet
+                // Elimină picăturile de ploaie din DOM după ce au dispărut
+                setTimeout(() => {
+                    while (rainContainer.firstChild) {
+                        rainContainer.removeChild(rainContainer.firstChild);
+                    }
+                }, 1500); // Așteaptă tranziția de opacitate a containerului de ploaie
+            }, 4500); // Ploaia durează 6 secunde
+
+            setTimeout(() => {
+                sunElement.classList.add('active'); // Activează soarele
+            }, 5500); // Soarele apare după 7.5 secunde (la scurt timp după ce ploaia se oprește)
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+﻿@model HaarpTech_Licenta.Models.ClientData
+
+@{
+    ViewData["Title"] = "Editare Client";
+}
+
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">@ViewData["Title"]</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="ID_CLIENT" />
+            <input type="hidden" asp-for="ID_CONTRACT" />
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="DenumireFiscala" class="form-label"></label>
+                    <input asp-for="DenumireFiscala" class="form-control" required />
+                    <div class="invalid-feedback">Denumirea fiscală este obligatorie.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Cui" class="form-label"></label>
+                    <input asp-for="Cui" class="form-control" required />
+                    <div class="invalid-feedback">CUI-ul este obligatoriu.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="NrRegCom" class="form-label"></label>
+                    <input asp-for="NrRegCom" class="form-control" />
+                    <div class="invalid-feedback">Numărul de înregistrare la Registrul Comerțului este obligatoriu.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Seduiu" class="form-label"></label>
+                    <input asp-for="Seduiu" class="form-control" required />
+                    <div class="invalid-feedback">Sediul este obligatoriu.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Judet" class="form-label"></label>
+                    <input asp-for="Judet" class="form-control" required />
+                    <div class="invalid-feedback">Județul este obligatoriu.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Tara" class="form-label"></label>
+                    <input asp-for="Tara" class="form-control" required />
+                    <div class="invalid-feedback">Țara este obligatorie.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="ContIban" class="form-label"></label>
+                    <input asp-for="ContIban" class="form-control" required />
+                    <div class="invalid-feedback">IBAN-ul este obligatoriu.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Banca" class="form-label"></label>
+                    <input asp-for="Banca" class="form-control" required />
+                    <div class="invalid-feedback">Banca este obligatorie.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Telefon" class="form-label"></label>
+                    <input asp-for="Telefon" class="form-control" type="tel" />
+                    <div class="invalid-feedback">Introduceți un număr de telefon valid.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" type="email" />
+                    <div class="invalid-feedback">Adresa de email trebuie să fie validă.</div>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-2"></i>Salvează modificări
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Înapoi
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        // Bootstrap validation
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}

@@ -1,5 +1,6 @@
 ﻿using HaarpTech_Licenta.Models;
 using HaarpTech_Licenta.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -74,6 +75,7 @@ namespace HaarpTech_Licenta.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("CerereOferta/Edit")]
         public async Task<IActionResult> Edit(string id)
         {
@@ -83,6 +85,7 @@ namespace HaarpTech_Licenta.Controllers
             return View(cereriOferta);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("CerereOferta/Edit")]
         public async Task<IActionResult> Edit(CerereOferta cerereOferta)
         {
@@ -96,6 +99,7 @@ namespace HaarpTech_Licenta.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
             var cerereOferta = await _cerereOfertaRepository.GetByIdAsync(id);
@@ -104,6 +108,7 @@ namespace HaarpTech_Licenta.Controllers
             return View(cerereOferta);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {

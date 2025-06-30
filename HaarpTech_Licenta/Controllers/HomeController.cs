@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using HaarpTech_Licenta.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +21,11 @@ namespace HaarpTech_Licenta.Controllers
         }
         
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult Cariere()
         {
             return View();
         }

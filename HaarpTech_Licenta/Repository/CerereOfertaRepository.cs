@@ -7,6 +7,15 @@ using System.Security.Claims;
 
 namespace HaarpTech_Licenta.Repository
 {
+    public interface ICerereOfertaRepository
+    {
+        Task<IEnumerable<CerereOferta>> GetAllAsync();
+        Task<CerereOferta> GetByIdAsync(string idCerereOferta);
+        Task<bool> UpdateCerereOfertaAsync(CerereOferta cereriOferta);
+        Task<bool> DeleteCerereOfertaAsync(string idCereOferta);
+        Task<bool> AddCerereOfertaAsync(CerereOferta cereriOferta);
+    }
+
     public class CerereOfertaRepository : ICerereOfertaRepository
     {
         private readonly IDatabaseConnection _dbConnection;
@@ -30,11 +39,11 @@ namespace HaarpTech_Licenta.Repository
                     var parameter = new
                     {
                         i_ID_CERERE = Guid.NewGuid().ToString(),
-                        i_ID_USER = cereriOferta.ID_USER ,
+                        i_ID_USER = userId,
                         i_DENUMIRE_CERERE = cereriOferta.DenumireCerere,
-                        i_DATA_CERERI = cereriOferta.DataCereri,
+                        i_DATA_CERERI = DateTime.Now,
                         i_PRET = cereriOferta.Pret,
-                        i_DESCRIERE = cereriOferta.DenumireCerere,
+                        i_DESCRIERE = cereriOferta.Descriere,
                         i_STATUS_CERERE = cereriOferta.StatusCerere,
                         i_TIP_APLICATIE = cereriOferta.TipAplicatie,
                         i_SERVICII_AI = cereriOferta.ServiciiAI,
@@ -79,7 +88,8 @@ namespace HaarpTech_Licenta.Repository
 
             if (connection.State != ConnectionState.Open)
                 connection.Open();
-
+            if (user.IsInRole("Admin") || user.IsInRole("ProjectManager"))
+            {
                 string sql = @"
                                  SELECT
                                        ID_CERERE			      
@@ -109,6 +119,43 @@ namespace HaarpTech_Licenta.Repository
                                        ,TIP_OFERTA                AS TipOferta
                                    FROM CRO_CERERI_OFERTE_V";
                 return await connection.QueryAsync<CerereOferta>(sql);
+            }
+            else
+            {
+                string sql = @"
+                     SELECT
+                           ID_CERERE			      
+                           ,ID_USER					  
+                           ,DENUMIRE_CERERE          AS DenumireCerere
+                           ,DATA_CERERI				 AS	DataCereri
+                           ,PRET				     AS Pret
+                           ,DESCRIERE				 AS	Descriere
+                           ,STATUS_CERERE			 AS	StatusCerere
+                           ,TIP_APLICATIE			 AS	TipAplicatie
+                           ,SERVICII_AI				 AS	ServiciiAi
+                           ,NIVEL_DE_SECURITATE		 AS	NivelDeSecuritate
+                           ,BAZA_DE_DATE				 AS BazaDeDate
+                           ,TIP_LOGARE				 AS	TipLogare
+                           ,SERVICII_CLOUD			 AS	ServiciiCloud
+                           ,TIP_ACCESS				 AS	TipAccess
+                           ,INTEGRARE_CU_ALTE_SISTEME AS IntegrareCuAlteSisteme
+                           ,ACCESIBILITATE		     AS	Accesibilitate
+                           ,CONTURI_LOGATE			 AS ConturiLogate
+                           ,TIMP_DE_REALIZARE		 AS	TimpDeRealizare
+                           ,TEHNOLOGIE				 AS	Tehnologie
+                           ,SPECIFICATII_TEHNICE		 AS SpecificatiiTehnice
+                           ,BUGET_ESTIMAT			 AS	BugetEstimat
+                           ,DATA_OFERTEI				 AS DataOfertei
+                           ,VOLUM_DE_DATE			 AS	VolumDeDate
+                           ,STATUS_OFERTA			 AS	StatusOferta
+                           ,TIP_OFERTA                AS TipOferta
+                       FROM CRO_CERERI_OFERTE_V
+                       WHERE TIP_OFERTA = UPPER('Model De Produs')
+                          OR ID_USER = @IdUser";
+                return await connection.QueryAsync<CerereOferta>(sql, new { IdUser = userId });
+            }
+
+            
         }
 
         public async Task<CerereOferta> GetByIdAsync(string idCerereOferta)
@@ -224,44 +271,6 @@ namespace HaarpTech_Licenta.Repository
                 throw;
             }
             
-        }
-
-        public async Task<bool> AddSedintaAsync(Sedinta sedinta)
-        {
-            try
-            {
-                string userId = _httpContextAccessor.HttpContext!
-                             .User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (userId == null)
-                    return false;
-
-                using (var connection = _dbConnection.GetConnection())
-                {
-                    var parameters = new
-                    {
-                        i_ID_SEDINTA = Guid.NewGuid().ToString(),
-                        i_DATA_SEDINTA = sedinta.DataSedinta,
-                        i_SUBIECT = sedinta.Subiect,
-                        i_DESCRIERE = sedinta.Descriere,
-                        i_STATUS_SEDINTA = sedinta.StatusSedinta,
-                        i_LOCATIE = sedinta.Locatie,
-                        i_TIP_SEDINTA = sedinta.TipSedinta,
-                        i_ID_USER = userId
-                    };
-
-                    int affectedRows = await connection.ExecuteAsync(
-                        "SED_SEDINTE_PKG_INSERT",
-                        parameters,
-                        commandType: CommandType.StoredProcedure
-                    );
-                    return affectedRows > 0;
-                }
-            }
-            catch (SqlException ex)
-            {
-                throw new Exception("Eroare la adăugarea ședinței.", ex);
-
-            }
         }
     }
 }

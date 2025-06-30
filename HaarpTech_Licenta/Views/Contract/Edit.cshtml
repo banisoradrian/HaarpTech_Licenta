@@ -1,0 +1,93 @@
+﻿@model HaarpTech_Licenta.Models.Contract
+@{
+    ViewData["Title"] = "Editare Contract";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6 text-primary">
+            <i class="bi bi-pen-fill me-2"></i>@ViewData["Title"]
+        </h1>
+        <a asp-action="Index" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left me-2"></i>Înapoi la listă
+        </a>
+    </div>
+
+    <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0">Modificare contract</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post" class="row g-3 needs-validation" novalidate>
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.ID_CONTRACT)
+                @Html.HiddenFor(m => m.ID_CERERE)
+
+                <div class="col-md-6">
+                    <label asp-for="NumarContract" class="form-label">Număr Contract</label>
+                    <input asp-for="NumarContract" class="form-control" required />
+                    <span asp-validation-for="NumarContract" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="NumeBeneficiar" class="form-label">Beneficiar</label>
+                    <input asp-for="NumeBeneficiar" class="form-control" required />
+                    <span asp-validation-for="NumeBeneficiar" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="DataContract" class="form-label">Data Contract</label>
+                    <input asp-for="DataContract"
+                           type="datetime-local"
+                           class="form-control"
+                           asp-format="{0:yyyy-MM-ddTHH:mm}"
+                           required />
+                    <span asp-validation-for="DataContract" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end mt-4 gap-2">
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="bi bi-save me-2"></i>Salvează modificări
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle me-2"></i>Anulează
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .card {
+            border-radius: 15px;
+        }
+
+        .needs-validation input:invalid {
+            border-color: #dc3545;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        (function () {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault(); event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}

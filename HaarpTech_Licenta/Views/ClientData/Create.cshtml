@@ -1,0 +1,142 @@
+﻿@model HaarpTech_Licenta.Models.ClientData
+@{
+    ViewData["Title"] = "Creare Client";
+}
+
+<div class="container-fluid px-4 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6 text-primary">
+            <i class="bi bi-building me-2"></i>@ViewData["Title"]
+        </h1>
+        <a asp-action="Index" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left me-2"></i>Înapoi la listă
+        </a>
+    </div>
+
+    <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title mb-0">Adăugare client nou</h5>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Create" class="row g-3 needs-validation" novalidate method="post">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.ID_CONTRACT)
+                @Html.HiddenFor(m => m.ID_CLIENT)
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!-- Date Client -->
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="DenumireFiscala" class="control-label"></label>
+                        <input asp-for="DenumireFiscala" class="form-control" placeholder="Denumire Fiscală" required />
+                        <span asp-validation-for="DenumireFiscala" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Cui" class="control-label"></label>
+                        <input asp-for="Cui" class="form-control" placeholder="CUI" required />
+                        <span asp-validation-for="Cui" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="NrRegCom" class="control-label"></label>
+                        <input asp-for="NrRegCom" class="form-control" placeholder="Nr. Reg. Com." />
+                        <span asp-validation-for="NrRegCom" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Seduiu" class="control-label"></label>
+                        <input asp-for="Seduiu" class="form-control" placeholder="Sediu (adresă completă)" required />
+                        <span asp-validation-for="Seduiu" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Judet" class="control-label"></label>
+                        <input asp-for="Judet" class="form-control" placeholder="Județ" required />
+                        <span asp-validation-for="Judet" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Tara" class="control-label"></label>
+                        <input asp-for="Tara" class="form-control" placeholder="Țară" required />
+                        <span asp-validation-for="Tara" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="ContIban" class="control-label"></label>
+                        <input asp-for="ContIban" class="form-control" placeholder="Cont IBAN" />
+                        <span asp-validation-for="ContIban" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Banca" class="control-label"></label>
+                        <input asp-for="Banca" class="form-control" placeholder="Bancă" />
+                        <span asp-validation-for="Banca" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Telefon" class="control-label"></label>
+                        <input asp-for="Telefon" type="tel" class="form-control" placeholder="Telefon" />
+                        <span asp-validation-for="Telefon" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" type="email" class="form-control" placeholder="Email" required />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Butoane -->
+                <div class="col-12 mt-4 d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-2"></i>Creează client
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-x-circle me-2"></i>Anulează
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+<style>
+    .form-label, label.control-label {
+        font-weight: 500;
+        color: #495057;
+    }
+
+    .card {
+        border-radius: 15px;
+    }
+
+    input::placeholder, textarea::placeholder {
+        color: #6c757d;
+        opacity: 0.7;
+    }
+</style>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        (function () {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}

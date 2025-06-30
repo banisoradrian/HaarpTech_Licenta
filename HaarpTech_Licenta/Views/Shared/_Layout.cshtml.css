@@ -46,3 +46,25 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+
+.navbar-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px; /* ajustează după nevoi */
+    height: 100vh;
+    padding: 1rem;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+body {
+    margin-left: 220px; /* să nu fie acoperit conținutul principal */
+}
+
+/* Optional: stiluri nav-link când se activează */
+.navbar-sidebar .nav-link.active {
+    background-color: #1b6ec2;
+    color: #fff;
+    border-radius: .375rem;
+}

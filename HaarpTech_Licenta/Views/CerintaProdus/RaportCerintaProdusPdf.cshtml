@@ -1,0 +1,127 @@
+﻿@model IEnumerable<HaarpTech_Licenta.Models.CerintaProdus>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Raport Cerințe Rezolvate</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 40px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: left;
+            word-wrap: break-word;
+            word-break: break-word;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #e9f0f7;
+            color: #0d6efd;
+            font-weight: bold;
+        }
+
+            th:nth-child(2),
+            td:nth-child(2) {
+                width: 40%;
+            }
+
+        .logo-img {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .signature-section {
+            margin-top: 50px;
+        }
+
+        .signature-block {
+            display: inline-block;
+            width: 45%;
+            vertical-align: top;
+        }
+
+            .signature-block p {
+                margin-top: 60px;
+            }
+
+        .text-muted {
+            color: #666;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="~/images/HaarpTechLogo1.png" asp-append-version="true" alt="Logo Haarp Tech" class="logo-img" />
+    </div>
+
+    <div class="header">
+        <h2>HAARP TECH S.R.L.</h2>
+        <p class="text-muted">RAPORT DE ACTIVITATE LA CONTRACTUL DE FURNIZARE PRODUSE ȘI SERVICII</p>
+    </div>
+
+    <p>Furnizorul a prestat în favoarea Beneficiarului următoarele servicii / activități:</p>
+
+    @if (!Model.Any())
+    {
+        <p><em>Nu există cerințe rezolvate.</em></p>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Data Elaborare</th>
+                    <th>Descriere Detaliată</th>
+                    <th>Prioritate</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.DataElaborare.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>@item.DescriereDetaliata</td>
+                        <td>@item.Prioritate</td>
+                        <td>@item.StatusCerinta</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="signature-section">
+        <div class="signature-block">
+            <p>SC __________________ S.R.L.</p>
+            <p>Administrator: __________________</p>
+        </div>
+        <div class="signature-block">
+            <p>SC HAARP TECH S.R.L.</p>
+            <p>Administrator: __________________</p>
+        </div>
+    </div>
+</body>
+</html>

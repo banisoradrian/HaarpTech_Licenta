@@ -1,12 +1,14 @@
-using HaarpTech_Licenta.Data;
+﻿using HaarpTech_Licenta.Data;
 using HaarpTech_Licenta.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using HaarpTech_Licenta.Enums;
 using HaarpTech_Licenta.Repository;
+using HaarpTech_Licenta.Utils;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
+GlobalizationUtils.ConfigureGlobalizationUtils();
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
                             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -29,6 +31,13 @@ builder.Services.AddScoped<IDatabaseConnection, DatabaseConnection>();
 builder.Services.AddScoped<ISedintaRepository, SedintaRepository>();
 builder.Services.AddScoped<IRaportCerintaRepository, RaportCerintaRepository>();
 builder.Services.AddScoped<ICerereOfertaRepository, CerereOfertaRepository>();
+builder.Services.AddScoped<ICerintaProdusRepository, CerintaProdusRepository>();
+builder.Services.AddScoped<IStatusTichetRepository, StatusTichetRepository>();
+builder.Services.AddScoped<IAngajatRepository, AngajatRepository>();
+builder.Services.AddScoped<INotaComandaRepository, NotaComandaRepository>();
+builder.Services.AddScoped<IContractRepository, ContractRepository>();
+builder.Services.AddScoped<IClientDataRepository, ClientDataRepository>();
+builder.Services.AddScoped<IFacturaRepository, FacturaRepository>();
 
 /// microsoft docs  https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-9.0&tabs=visual-studio
 builder.Services.Configure<IdentityOptions>(options =>
@@ -64,10 +73,22 @@ builder.Services.ConfigureApplicationCookie(options =>
 }); 
 var app = builder.Build();
 
+// Rotativa configuration
+// --- 2. Setup Rotativa pointing to the project-root “Rotativa” folder ---
+// aici spunem Rotativa unde să caute wkhtmltopdf.exe
+var rotativaFolder = Path.Combine(app.Environment.ContentRootPath, "Rotativa");
+RotativaConfiguration.Setup(rotativaFolder, string.Empty);
+
+// --- 3. Creare automată a folderului NoteDeComandaFiles ---
+// astfel încât, înainte să răspundem la orice cerere, folderul există
+var noteFolder = Path.Combine(app.Environment.ContentRootPath, "NoteDeComandaFiles");
+Directory.CreateDirectory(noteFolder);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+    app.UseDeveloperExceptionPage();
 }
 else
 {
@@ -76,7 +97,7 @@ else
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection();  
 app.UseRouting();
 
 app.UseAuthorization();

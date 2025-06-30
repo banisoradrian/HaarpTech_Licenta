@@ -1,0 +1,123 @@
+﻿@model HaarpTech_Licenta.Models.Angajat
+
+@{
+    ViewData["Title"] = "Editare Angajat";
+    var minDate = new DateTime(2025, 1, 1).ToString("yyyy-MM-dd");
+
+}
+
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">@ViewData["Title"]</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="ID_ANGAJAT" />
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Nume" class="form-label"></label>
+                    <input asp-for="Nume" class="form-control" required />
+                    <div class="invalid-feedback">Numele este obligatoriu.</div>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Prenume" class="form-label"></label>
+                    <input asp-for="Prenume" class="form-control" required />
+                    <div class="invalid-feedback">Prenumele este obligatoriu.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" type="email" required />
+                    <div class="invalid-feedback">Adresa de email este obligatorie și trebuie să fie validă.</div>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Telefon" class="form-label"></label>
+                    <input asp-for="Telefon" class="form-control" type="tel" />
+                    <div class="invalid-feedback">Introdu un număr de telefon valid.</div>
+                </div>
+
+                <div class="col-md-6">
+                        <label asp-for="DataAngajare" class="control-label"></label>
+                    <input asp-for="DataAngajare" type="datetime-local" class="form-control" min="@minDate" />
+                        <span asp-validation-for="DataAngajare" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Cnp" class="form-label"></label>
+                    <input asp-for="Cnp" class="form-control" required />
+                    <div class="invalid-feedback">CNP-ul este obligatoriu.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="SerieNr" class="form-label"></label>
+                    <input asp-for="SerieNr" class="form-control" />
+                    <div class="invalid-feedback">Introduceți seria și numărul CI.</div>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Localitate" class="form-label"></label>
+                    <input asp-for="Localitate" class="form-control" required />
+                    <div class="invalid-feedback">Localitatea este obligatorie.</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Tara" class="form-label"></label>
+                    <input asp-for="Tara" class="form-control" required />
+                    <div class="invalid-feedback">Țara este obligatorie.</div>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Salariu" class="control-label"></label>
+                    <div class="input-group">
+                        <input asp-for="Salariu" type="number" step="1" class="form-control" placeholder="Salariu lunar" required />
+                        <span class="input-group-text">RON</span>
+                    </div>
+                    <span asp-validation-for="Salariu" class="text-danger"></span>
+        
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Pozitie" class="form-label"></label>
+                    <input asp-for="Pozitie" class="form-control" required />
+                    <div class="invalid-feedback">Poziția este obligatorie.</div>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Departament" class="form-label"></label>
+                    <input asp-for="Departament" class="form-control" required />
+                    <div class="invalid-feedback">Departamentul este obligatoriu.</div>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-2"></i>Salvează modificări
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Înapoi
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Bootstrap validation
+        (() => {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+}

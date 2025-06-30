@@ -1,0 +1,125 @@
+﻿@model IEnumerable<HaarpTech_Licenta.Models.Angajat>
+
+@{
+        ViewData["Title"] = "Listă Angajați";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary mb-0"><i class="fas fa-users"></i> @ViewData["Title"]</h2>
+        <div class="w-50">
+            <input type="text" id="searchInput" class="form-control" placeholder="Caută în nume, prenume, email, telefon, poziție..." />
+        </div>
+    </div>
+    <p>
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="btn btn-primary" asp-controller="Angajat" asp-action="Create"><i class="bi bi-plus-circle"></i> Angajat Nou</a>
+        }
+    </p>
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-table"></i> Detalii Angajați</h4>
+        </div>
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Nume</th>
+                                <th>Prenume</th>
+                                <th>Data Angajării</th>
+                                <th>Localitate</th>
+                                <th>Salariu</th>
+                                <th>Poziție</th>
+                                <th>Departament</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="angajatTable">
+                            @foreach (var angajat in Model)
+                            {
+                                <tr class="angajat-row">
+                                    <td>@angajat.Nume</td>
+                                    <td>@angajat.Prenume</td>
+                                    <td>@angajat.DataAngajare.ToString("yyyy-MM-dd")</td>
+                                    <td>@angajat.Localitate</td>
+                                    <td>@angajat.Salariu.ToString("C")</td>
+                                    <td>@angajat.Pozitie</td>
+                                    <td>@angajat.Departament</td>
+                                    <td>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <a class="btn btn-primary btn-sm" asp-controller="Angajat" asp-action="Edit" asp-route-id="@angajat.ID_ANGAJAT"><i class="bi bi-pen-fill"></i></a>
+                                        }
+                                        <a class="btn btn-warning btn-sm" asp-controller="Angajat" asp-action="Details" asp-route-id="@angajat.ID_ANGAJAT"><i class="bi bi-info-circle"></i></a>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <a class="btn btn-danger btn-sm" asp-controller="Angajat" asp-action="Delete" asp-route-id="@angajat.ID_ANGAJAT"><i class="bi bi-trash3-fill"></i></a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="card-footer bg-light py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted">@Model.Count() înregistrări găsite</span>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">Nu există angajați înregistrați.</div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+            transition: transform 0.3s ease;
+        }
+
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        .table th {
+            background-color: #e9f7fe;
+            color: #0d6efd;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        #searchInput {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 20px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.getElementById('searchInput').addEventListener('keyup', function () {
+            var term = this.value.trim().toLowerCase();
+            document.querySelectorAll('.angajat-row').forEach(function (row) {
+                var text = row.innerText.toLowerCase();
+                row.style.display = text.includes(term) ? '' : 'none';
+            });
+        });
+    </script>
+}

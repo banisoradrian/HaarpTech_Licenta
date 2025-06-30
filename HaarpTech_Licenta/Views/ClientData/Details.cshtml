@@ -1,0 +1,75 @@
+﻿@model HaarpTech_Licenta.Models.ClientData
+
+@{
+    ViewData["Title"] = "Detalii Client";
+}
+
+<div class="card mx-auto mt-5 shadow" style="max-width: 900px;">
+    <div class="card-header bg-primary text-white text-center">
+        <h3><i class="bi bi-building"></i> @ViewData["Title"]</h3>
+    </div>
+
+    <div class="card-body">
+        <dl class="row">
+
+            <dt class="col-sm-4">Denumire Fiscală:</dt>
+            <dd class="col-sm-8">@Model.DenumireFiscala</dd>
+
+            <dt class="col-sm-4">CUI:</dt>
+            <dd class="col-sm-8">@Model.Cui</dd>
+
+            <dt class="col-sm-4">Nr. Reg. Comerț:</dt>
+            <dd class="col-sm-8">@Model.NrRegCom</dd>
+
+            <dt class="col-sm-4">Sediu:</dt>
+            <dd class="col-sm-8">@Model.Seduiu</dd>
+
+            <dt class="col-sm-4">Județ:</dt>
+            <dd class="col-sm-8">@Model.Judet</dd>
+
+            <dt class="col-sm-4">Țară:</dt>
+            <dd class="col-sm-8">@Model.Tara</dd>
+
+            <dt class="col-sm-4">Email:</dt>
+            <dd class="col-sm-8">@Model.Email</dd>
+
+            <dt class="col-sm-4">Telefon:</dt>
+            <dd class="col-sm-8">@Model.Telefon</dd>
+
+            <dt class="col-sm-4">Cont IBAN:</dt>
+            <dd class="col-sm-8">@Model.ContIban</dd>
+
+            <dt class="col-sm-4">Banca:</dt>
+            <dd class="col-sm-8">@Model.Banca</dd>
+
+        </dl>
+    </div>
+
+    <div class="card-footer text-center">
+
+
+        @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+        {
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Înapoi la listă
+            </a>
+            <a asp-controller="ClientData" asp-action="Edit" asp-route-id="@Model.ID_CLIENT" class="btn btn-outline-warning">
+                <i class="bi bi-pencil-square"></i> Editează
+            </a>
+
+            <a asp-controller="ClientData" asp-action="Delete" asp-route-id="@Model.ID_CLIENT" class="btn btn-outline-danger">
+                <i class="bi bi-trash"></i> Șterge
+            </a>
+
+            <a asp-controller="Factura" asp-action="Create" asp-route-id="@Model.ID_CLIENT" class="btn btn-outline-success">
+                <i class="bi bi-plus-circle"></i> Adugă Factură
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Factura" asp-action="IndexFiltred" asp-route-id="@Model.ID_CLIENT" class="list-group-item list-group-item-action">
+                <i class="bi bi-receipt"></i>Facturi
+            </a>
+        }
+    </div>
+</div>

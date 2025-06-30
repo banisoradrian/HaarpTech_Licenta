@@ -1,0 +1,17 @@
+﻿@model AssignTichetViewModel
+
+<h2>Asignare tichet <bold>@Model.Subiect</bold></h2>
+
+<form asp-action="Assign" method="post">
+    <input asp-for="ID_TICHET" type="hidden" />
+
+    <div class="form-group">
+        <label asp-for="ID_ANGAJAT">Angajat</label>
+        <select asp-for="ID_ANGAJAT" class="form-control" asp-items="@(new SelectList(Model.Angajati, "ID_ANGAJAT", "AssignInfo"))">
+            <option value="">-- Alege un angajat --</option>
+        </select>
+        <span asp-validation-for="ID_ANGAJAT" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Asignează</button>
+</form>

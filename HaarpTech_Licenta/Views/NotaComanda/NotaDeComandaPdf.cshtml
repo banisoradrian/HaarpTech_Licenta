@@ -1,0 +1,280 @@
+﻿@model HaarpTech_Licenta.Models.NotaComanda
+@{
+    Layout = null;
+    decimal pretTva= Model.PretTotalFaraTva * 1.19m;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Notă Comandă @Model.NumarComanda</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-size: 12pt;
+            line-height: 1.4;
+            padding: 0.5in;
+            max-width: 8.5in;
+            margin: 0 auto;
+            position: relative;
+            background-color: #fff;
+            color: #000;
+        }
+
+        .header {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 30px;
+            border-bottom: 2px solid #003366;
+            padding-bottom: 15px;
+        }
+
+        .logo-left-container, .logo-right-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-left-container {
+            justify-content: flex-start;    
+            flex-basis: auto;               
+            padding-right: 10px;            
+        }
+
+        .logo-right-container {
+            justify-content: flex-end;    
+            flex-basis: auto;             
+            padding-left: 10px;           
+        }
+
+        .institution-text-center {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+/*         .logo-haarptech {
+            max-width: 110px;
+            max-height: 110px;
+            width: auto; 
+            height: auto; 
+            display: block; 
+        } */
+
+        .logo-ministerulmuncii {
+            max-width: 300px;
+            max-height: 300px;
+            width: auto; 
+            height: auto; 
+            display: block; 
+        }
+
+        .institution-name {
+            font-size: 16pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #003366;
+            margin-bottom: 5px;
+        }
+
+        .institution-subtitle {
+            font-size: 13pt;
+            font-weight: bold;
+        }
+
+        .document-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 14pt;
+            margin: 25px 0;
+            text-decoration: underline;
+        }
+
+        .recipient {
+            margin-bottom: 20px;
+        }
+
+        .reference {
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        .item-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+
+            .item-table, .item-table th, .item-table td {
+                border: 1px solid #000;
+            }
+
+                .item-table th, .item-table td {
+                    padding: 8px;
+                    text-align: center;
+                }
+
+                .item-table th {
+                    background-color: #f0f0f0;
+                    font-weight: bold;
+                }
+
+        .total-value {
+            font-weight: bold;
+            margin: 15px 0;
+            text-align: right;
+            font-size: 13pt;
+        }
+
+        .terms-section {
+            margin: 25px 0;
+            padding-left: 10px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            border-left: 3px solid #003366;
+            padding-left: 8px;
+        }
+
+        .signature {
+            margin-top: 80px;
+            text-align: right;
+        }
+
+        .signature-line {
+            border-top: 1px solid #000;
+            width: 300px;
+            margin-top: 40px;
+            padding-top: 5px;
+            text-align: center;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0.5in;
+            width: calc(100% - 1in);
+            font-style: italic;
+            text-align: center;
+            font-size: 10pt;
+            color: #555;
+        }
+
+        .document-info {
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .highlight {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+@*         <div class="logo-left-container">
+            <img src="~/images/HaarpTechLogo1.png" alt="Haarptech Logo" class="logo-haarptech" />
+        </div> *@
+
+        <div class="logo-right-container">
+            <img src="~/images/MinisterulMuncii.png" alt="Ministerul Muncii Logo" class="logo-ministerulmuncii" />
+        </div>
+    </div>
+
+    <div class="recipient">
+        <strong>Către:</strong> @Model.Destinatar
+    </div>
+
+    <div class="document-info">
+        NOTĂ DE COMANDĂ NR. @Model.NumarComanda / DATA @Model.DataNota.ToString("dd.MM.yyyy")
+    </div>
+
+    <div class="reference">
+        Referitor la oferta dumneavoastră, analizată de echipa noastră în data de @Model.DataEmiterii.ToString("dd.MM.yyyy"),
+        prin prezenta comandă solicităm furnizarea și integrarea în mediul nostru de dezvoltare a următoarelor soluții software,
+        licențe sau abonamente de servicii esențiale pentru activitatea @Model.Activitate, cu detaliile fiscale aferente:
+    </div>
+
+    <table class="item-table">
+        <thead>
+            <tr>
+                <th>Nr. Crt.</th>
+                <th>Denumire</th>
+                <th>UM</th>
+                <th>Cantitate</th>
+                <th>Preț unitar fără TVA</th>
+                <th>Preț total fără TVA</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>@Model.Denumire</td>
+                <td>@Model.Um</td>
+                <td>@Model.Cantitate</td>
+                <td>@Model.PretTotalFaraTva.ToString("N2")</td>
+                <td>@Model.PretTotalFaraTva.ToString("N2")</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="total-value">
+        Valoarea totală notei de comandă: <span style="text-decoration: underline;">@Model.PretTotalFaraTva.ToString("N2")</span> lei fără TVA,
+        respectiv <span style="text-decoration: underline;">pretTva</span> lei cu TVA inclus.
+    </div>
+
+    <div class="terms-section">
+        <div class="section-title">Furnizarea produselor se va face în următoarele condiții:</div>
+        <p>
+            Termenul de livrare este de maxim @Model.TermenLivrare zile de la primirea notei de comandă.
+            Livrarea se va face la sediul autorității contractante.
+        </p>
+        <p>
+            Livrarea va fi subiectul unei recepții cantitative și calitative care se va realiza la sediul autorității
+            contractante, care va viza conformitatea cu specificațiile tehnice și va fi consemnată într-un proces-verbal
+            de recepție.
+        </p>
+    </div>
+
+    <div class="terms-section">
+        <div class="section-title">Plata către prestator:</div>
+        <p>
+            Plata se va efectua, prin ordin de plată, din contul @Model.Iban, deschis la @Model.Banca,
+            în contul de trezorerie al furnizorului. Termenul de plată este de maxim 30 de zile de la data primirii
+            facturii la sediul achizitorului, în baza procesului verbal de recepție.
+        </p>
+        <p class="highlight">
+            Prezenta reprezintă comanda noastră fermă pentru furnizarea produsului solicitat.
+        </p>
+    </div>
+
+    <div class="signature">
+        Administrator,<br>
+        <div class="signature-line">Semnătură și ștampilă</div>
+        <br/>
+    <br/>
+    <br/>
+    </div>
+
+    
+
+    <div class="footer">
+        Document emis electronic - Semnătură digitală conform Legii 455/2001
+    </div>
+</body>
+</html>

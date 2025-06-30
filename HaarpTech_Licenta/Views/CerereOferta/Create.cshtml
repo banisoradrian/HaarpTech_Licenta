@@ -23,7 +23,6 @@
             <form asp-action="Create" class="row g-3">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <!-- Coloana 1 -->
                 <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="DenumireCerere" class="control-label"></label>
@@ -31,24 +30,40 @@
                         <span asp-validation-for="DenumireCerere" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label asp-for="StatusCerere" class="control-label"></label>
-                        <select asp-for="StatusCerere" class="form-select">
-                            <option value="Nouă">Nouă</option>
-                            <option value="În analiză">În analiză</option>
-                            <option value="Aprobată">Aprobată</option>
-                            <option value="Respinsă">Respinsă</option>
-                            <option value="Expirată">Expirată</option>
-                        </select>
-                        <span asp-validation-for="StatusCerere" class="text-danger"></span>
+                    @if (User.IsInRole("Client"))
+                    {
+                        <div class="form-group mb-3">
+                            <label asp-for="StatusCerere" class="control-label"></label>
+                            <input asp-for="StatusCerere" class="form-control" value="Nouă" readonly />
+                            <span asp-validation-for="StatusCerere" class="text-danger"></span>
+                        </div>
+                    }
+                    else if (User.IsInRole("Admin") || User.IsInRole("Consultant"))
+                    {
+                        <div class="form-group">
+                            <label asp-for="StatusCerere" class="control-label"></label>
+                            <select asp-for="StatusCerere" class="form-select">
+                                <option value="Nouă">Nouă</option>
+                                <option value="În analiză">În analiză</option>
+                                <option value="Aprobată">Aprobată</option>
+                                <option value="Respinsă">Respinsă</option>
+                                <option value="Expirată">Expirată</option>
+                            </select>
+                            <span asp-validation-for="StatusCerere" class="text-danger"></span>
+                        </div>
+                    }
+                    <div class="form-group mb-3">
+                        <label asp-for="Pret" class="control-label"></label>
+                        <input asp-for="Pret" class="form-control" value="0" readonly id="calculatedPrice" />
+                        <span asp-validation-for="Pret" class="text-danger"></span>
                     </div>
                 </div>
 
-                <!-- Coloana 2 -->
                 <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="TipAplicatie" class="control-label"></label>
-                        <select asp-for="TipAplicatie" class="form-select">
+                        <select asp-for="TipAplicatie" class="form-select" id="tipAplicatie">
+                            <option value="">-- Selectează Tipul Aplicației --</option>
                             <option value="Web">Aplicație Web</option>
                             <option value="Mobile">Aplicație Mobile</option>
                             <option value="Desktop">Aplicație Desktop</option>
@@ -58,7 +73,8 @@
 
                     <div class="form-group">
                         <label asp-for="NivelDeSecuritate" class="control-label"></label>
-                        <select asp-for="NivelDeSecuritate" class="form-select">
+                        <select asp-for="NivelDeSecuritate" class="form-select" id="nivelSecuritate">
+                            <option value="">-- Selectează Nivelul de Securitate --</option>
                             <option value="Standard">Standard</option>
                             <option value="Înalt">Înalt</option>
                             <option value="Critic">Critic</option>
@@ -68,31 +84,33 @@
 
                     <div class="form-group">
                         <label asp-for="BazaDeDate" class="control-label"></label>
-                        <select asp-for="BazaDeDate" class="form-select">
-                            <option value="SQL Server">SQL Server</option>
-                            <option value="MySQL">MySQL</option>
+                        <select asp-for="BazaDeDate" class="form-select" id="bazaDeDate">
+                            <option value="">-- Selectează Baza de Date --</option>
+                            <option value="Microsoft SQL Server">Microsoft SQL Server</option>
                             <option value="Oracle">Oracle</option>
                         </select>
                         <span asp-validation-for="BazaDeDate" class="text-danger"></span>
                     </div>
                 </div>
 
-                <!-- Coloana 3 -->
                 <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="VolumDeDate" class="control-label"></label>
-                        <input asp-for="VolumDeDate" class="form-control" placeholder="Introdu numărul de înregistrări" />
+                        <input asp-for="VolumDeDate" class="form-control" placeholder="Introdu numărul de înregistrări" type="number" id="volumDate" min="0" />
                         <span asp-validation-for="VolumDeDate" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label asp-for="BugetEstimat" class="control-label"></label>
-                        <div class="input-group">
-                            <input asp-for="BugetEstimat" class="form-control" placeholder="Introdu bugetul estimat" />
-                            <span class="input-group-text">Lei</span>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="form-group">
+                            <label asp-for="BugetEstimat" class="control-label"></label>
+                            <div class="input-group">
+                                <input asp-for="BugetEstimat" class="form-control" placeholder="Introdu bugetul estimat" />
+                                <span class="input-group-text">RON</span>
+                            </div>
+                            <span asp-validation-for="BugetEstimat" class="text-danger"></span>
                         </div>
-                        <span asp-validation-for="BugetEstimat" class="text-danger"></span>
-                    </div>
+                    }
 
                     <div class="form-group">
                         <label asp-for="TimpDeRealizare" class="control-label"></label>
@@ -101,7 +119,6 @@
                     </div>
                 </div>
 
-                <!-- Alte câmpuri -->
                 <div class="col-12">
                     <div class="form-group">
                         <label asp-for="Descriere" class="control-label"></label>
@@ -111,7 +128,13 @@
                 </div>
 
                 <div class="col-12">
-                    <div class="form-group">
+                    <div class="form-group form-check">
+                        <input class="form-check-input" type="checkbox" id="serviciiAICheckbox">
+                        <label class="form-check-label" for="serviciiAICheckbox">
+                            Servicii AI necesare
+                        </label>
+                    </div>
+                    <div class="form-group" id="serviciiAIInputGroup" style="display: none;">
                         <label asp-for="ServiciiAI" class="control-label"></label>
                         <input asp-for="ServiciiAI" class="form-control" placeholder="Specificați serviciile AI necesare" />
                         <span asp-validation-for="ServiciiAI" class="text-danger"></span>
@@ -119,12 +142,95 @@
                 </div>
 
                 <div class="col-12">
-                    <div class="form-group">
+                    <div class="form-group form-check">
+                        <input class="form-check-input" type="checkbox" id="serviciiCloudCheckbox">
+                        <label class="form-check-label" for="serviciiCloudCheckbox">
+                            Servicii Cloud necesare
+                        </label>
+                    </div>
+                    <div class="form-group" id="serviciiCloudInputGroup" style="display: none;">
+                        <label asp-for="ServiciiCloud" class="control-label"></label>
+                        <input asp-for="ServiciiCloud" class="form-control" placeholder="Specificați serviciile Cloud necesare" />
+                        <span asp-validation-for="ServiciiCloud" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group form-check">
+                        <input class="form-check-input" type="checkbox" id="integrareAlteSistemeCheckbox">
+                        <label class="form-check-label" for="integrareAlteSistemeCheckbox">
+                            Integrare cu Alte Sisteme necesară
+                        </label>
+                    </div>
+                    <div class="form-group" id="integrareCuAlteSistemeInputGroup" style="display: none;">
                         <label asp-for="IntegrareCuAlteSisteme" class="control-label"></label>
                         <input asp-for="IntegrareCuAlteSisteme" class="form-control" placeholder="Enumerați sistemele de integrat" />
                         <span asp-validation-for="IntegrareCuAlteSisteme" class="text-danger"></span>
                     </div>
                 </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="TipLogare" class="control-label"></label>
+                        <select asp-for="TipLogare" class="form-select" id="tipLogare">
+                            <option value="">-- Selectează Tipul de Logare --</option>
+                            <option value="Simplă (email/parolă)">Simplă (email/parolă)</option>
+                            <option value="OAuth (Google/Facebook)">OAuth (Google/Facebook)</option>
+                            <option value="SSO (Single Sign-On)">SSO (Single Sign-On)</option>
+                        </select>
+                        <span asp-validation-for="TipLogare" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="TipAccess" class="control-label"></label>
+                        <select asp-for="TipAccess" class="form-select" id="tipAccess">
+                            <option value="">-- Selectează Tipul de Acces --</option>
+                            <option value="Public">Public</option>
+                            <option value="Privat (cu autentificare)">Privat (cu autentificare)</option>
+                            <option value="Mixt">Mixt</option>
+                        </select>
+                        <span asp-validation-for="TipAccess" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Accesibilitate" class="control-label"></label>
+                        <select asp-for="Accesibilitate" class="form-select" id="accesibilitate">
+                            <option value="">-- Selectează Accesibilitatea --</option>
+                            <option value="Standard (conform legilor locale)">Standard (conform legilor locale)</option>
+                            <option value="WCAG 2.1 AA">WCAG 2.1 AA</option>
+                        </select>
+                        <span asp-validation-for="Accesibilitate" class="text-danger"></span>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="ConturiLogate" class="control-label"></label>
+                        <input asp-for="ConturiLogate" class="form-control" placeholder="Număr estimat de conturi logate simultan" type="number" min="0" id="conturiLogate" />
+                        <span asp-validation-for="ConturiLogate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Tehnologie" class="control-label"></label>
+                        <input asp-for="Tehnologie" class="form-control" placeholder="Ex: .NET, React, Python etc." id="tehnologie" />
+                        <span asp-validation-for="Tehnologie" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="SpecificatiiTehnice" class="control-label"></label>
+                        <textarea asp-for="SpecificatiiTehnice" class="form-control" rows="3" placeholder="Alte specificații tehnice..." id="specificatiiTehnice"></textarea>
+                        <span asp-validation-for="SpecificatiiTehnice" class="text-danger"></span>
+                    </div>
+                </div>
+
 
                 <div class="col-12 mt-4">
                     <div class="d-flex justify-content-end gap-2">
@@ -168,4 +274,219 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        $(document).ready(function () {
+            // Prețuri de bază și adiționale
+            const basePrice = 1000; // Prețul de bază al unei aplicații
+
+            // Prețuri pe Tip Aplicație
+            const pricePerWebApp = 2000;
+            const pricePerMobileApp = 3000;
+            const pricePerDesktopApp = 1500;
+
+            // Prețuri pe Nivel de Securitate
+            const pricePerHighSecurity = 500;
+            const pricePerCriticalSecurity = 1000;
+
+            // Prețuri pe Bază de Date
+            const pricePerOracleDB = 750; // Cost adițional pentru Oracle față de SQL Server
+
+            // Prețuri pe Volum de Date (pentru fiecare 10.000 de înregistrări)
+            const pricePer10000Records = 100;
+
+            // Prețuri pentru Servicii Adiționale (AI, Cloud, Integrare Sisteme)
+            const pricePerAIType = 1500;
+            const pricePerCloudService = 1200;
+            const pricePerSystemIntegration = 800;
+
+            // Prețuri pentru Tip Logare
+            const pricePerOAuthLogin = 300;
+            const pricePerSSOLogin = 700;
+
+            // Prețuri pentru Tip Acces
+            const pricePerPrivateAccess = 200;
+            const pricePerMixedAccess = 400;
+
+            // Prețuri pentru Accesibilitate
+            const pricePerWCAG = 600;
+
+            // Prețuri pentru Conturi Logate (pentru fiecare 100 de conturi)
+            const pricePer100Accounts = 50;
+
+            // Prețuri pentru Tehnologie (exemplu simplificat)
+            const priceForSpecificTech = 500; // Poți extinde cu o logică mai complexă aici
+
+            // Prețuri pentru Specificații Tehnice (exemplu - bazat pe prezența textului)
+            const priceForTechSpecs = 300;
+
+            function calculatePrice() {
+                let currentPrice = basePrice;
+
+                // Preț în funcție de tipul aplicației
+                const appType = $('#tipAplicatie').val();
+                if (appType === 'Web') {
+                    currentPrice += pricePerWebApp;
+                } else if (appType === 'Mobile') {
+                    currentPrice += pricePerMobileApp;
+                } else if (appType === 'Desktop') {
+                    currentPrice += pricePerDesktopApp;
+                }
+
+                // Preț în funcție de nivelul de securitate
+                const securityLevel = $('#nivelSecuritate').val();
+                if (securityLevel === 'Înalt') {
+                    currentPrice += pricePerHighSecurity;
+                } else if (securityLevel === 'Critic') {
+                    currentPrice += pricePerCriticalSecurity;
+                }
+
+                // Preț în funcție de baza de date
+                const databaseType = $('#bazaDeDate').val();
+                if (databaseType === 'Oracle') {
+                    currentPrice += pricePerOracleDB;
+                }
+
+                // Preț în funcție de volumul de date (pentru fiecare 10.000 de înregistrări)
+                const dataVolume = parseInt($('#volumDate').val());
+                if (!isNaN(dataVolume) && dataVolume > 0) {
+                    currentPrice += Math.floor(dataVolume / 10000) * pricePer10000Records;
+                }
+
+                // Adaugă preț pentru servicii AI dacă checkbox-ul este bifat
+                if ($('#serviciiAICheckbox').is(':checked')) {
+                    currentPrice += pricePerAIType;
+                }
+
+                // Adaugă preț pentru servicii Cloud dacă checkbox-ul este bifat
+                if ($('#serviciiCloudCheckbox').is(':checked')) {
+                    currentPrice += pricePerCloudService;
+                }
+
+                // Adaugă preț pentru Integrare cu Alte Sisteme dacă checkbox-ul este bifat
+                if ($('#integrareAlteSistemeCheckbox').is(':checked')) {
+                    currentPrice += pricePerSystemIntegration;
+                }
+                
+                // Preț în funcție de tipul de logare
+                const loginType = $('#tipLogare').val();
+                if (loginType === 'OAuth (Google/Facebook)') {
+                    currentPrice += pricePerOAuthLogin;
+                } else if (loginType === 'SSO (Single Sign-On)') {
+                    currentPrice += pricePerSSOLogin;
+                }
+
+                // Preț în funcție de tipul de acces
+                const accessType = $('#tipAccess').val();
+                if (accessType === 'Privat (cu autentificare)') {
+                    currentPrice += pricePerPrivateAccess;
+                } else if (accessType === 'Mixt') {
+                    currentPrice += pricePerMixedAccess;
+                }
+
+                // Preț în funcție de accesibilitate
+                const accessibility = $('#accesibilitate').val();
+                if (accessibility === 'WCAG 2.1 AA') {
+                    currentPrice += pricePerWCAG;
+                }
+
+                // Preț în funcție de conturi logate (pentru fiecare 100 de conturi)
+                const loggedAccounts = parseInt($('#conturiLogate').val());
+                if (!isNaN(loggedAccounts) && loggedAccounts > 0) {
+                    currentPrice += Math.floor(loggedAccounts / 100) * pricePer100Accounts;
+                }
+
+                // Preț în funcție de Tehnologie (dacă e specificată, adaugă un cost fix - poate fi extins)
+                const technology = $('#tehnologie').val();
+                if (technology && technology.trim() !== '') {
+                    currentPrice += priceForSpecificTech;
+                }
+
+                // Preț în funcție de Specificații Tehnice (dacă există text, adaugă un cost fix)
+                const techSpecs = $('#specificatiiTehnice').val();
+                if (techSpecs && techSpecs.trim() !== '') {
+                    currentPrice += priceForTechSpecs;
+                }
+
+
+                $('#calculatedPrice').val(currentPrice.toFixed(2)); // Afișează prețul cu 2 zecimale
+            }
+
+            // Ascultă evenimente de schimbare pentru checkbox-uri și dropdown-uri
+            $('#serviciiAICheckbox').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#serviciiAIInputGroup').show();
+                } else {
+                    $('#serviciiAIInputGroup').hide();
+                    $('#ServiciiAI').val(''); // Golește câmpul dacă nu este bifat
+                }
+                calculatePrice();
+            });
+
+            $('#serviciiCloudCheckbox').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#serviciiCloudInputGroup').show();
+                } else {
+                    $('#serviciiCloudInputGroup').hide();
+                    $('#ServiciiCloud').val(''); // Golește câmpul dacă nu este bifat
+                }
+                calculatePrice();
+            });
+
+            $('#integrareAlteSistemeCheckbox').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#integrareCuAlteSistemeInputGroup').show();
+                } else {
+                    $('#integrareCuAlteSistemeInputGroup').hide();
+                    $('#IntegrareCuAlteSisteme').val(''); // Golește câmpul dacă nu este bifat
+                }
+                calculatePrice();
+            });
+
+
+            $('#tipAplicatie, #nivelSecuritate, #bazaDeDate, #volumDate, #tipLogare, #tipAccess, #accesibilitate, #conturiLogate, #tehnologie, #specificatiiTehnice').change(calculatePrice);
+            $('#volumDate, #conturiLogate').keyup(calculatePrice); // Recalculează și la tastare în volum de date și conturi logate
+            $('#tehnologie, #specificatiiTehnice').keyup(calculatePrice); // Recalculează și la tastare în câmpurile text
+
+            // --- Inițializarea la încărcarea paginii (Regândit) ---
+            // Rolul tău de programator .NET și student la Informatică Economică te ajută să vezi
+            // că inițializarea corectă este crucială pentru o aplicație stabilă.
+            // Am modificat logica de inițializare pentru a evita NRE dacă Modelul este null inițial.
+            function initializeFormBasedOnModelData() {
+                // Verifică ServiciiAI
+                const serviciiAIInput = $('#ServiciiAI');
+                if (serviciiAIInput.val() && serviciiAIInput.val().trim() !== '') {
+                    $('#serviciiAICheckbox').prop('checked', true);
+                    $('#serviciiAIInputGroup').show();
+                } else {
+                    $('#serviciiAICheckbox').prop('checked', false);
+                    $('#serviciiAIInputGroup').hide();
+                }
+
+                // Verifică ServiciiCloud
+                const serviciiCloudInput = $('#ServiciiCloud');
+                if (serviciiCloudInput.val() && serviciiCloudInput.val().trim() !== '') {
+                    $('#serviciiCloudCheckbox').prop('checked', true);
+                    $('#serviciiCloudInputGroup').show();
+                } else {
+                    $('#serviciiCloudCheckbox').prop('checked', false);
+                    $('#serviciiCloudInputGroup').hide();
+                }
+
+                // Verifică IntegrareCuAlteSisteme
+                const integrareAlteSistemeInput = $('#IntegrareCuAlteSisteme');
+                if (integrareAlteSistemeInput.val() && integrareAlteSistemeInput.val().trim() !== '') {
+                    $('#integrareAlteSistemeCheckbox').prop('checked', true);
+                    $('#integrareCuAlteSistemeInputGroup').show();
+                } else {
+                    $('#integrareAlteSistemeCheckbox').prop('checked', false);
+                    $('#integrareCuAlteSistemeInputGroup').hide();
+                }
+                
+                calculatePrice(); // Calculează prețul după inițializare
+            }
+
+            initializeFormBasedOnModelData(); // Apelăm funcția de inițializare la încărcarea documentului
+        });
+    </script>
 }

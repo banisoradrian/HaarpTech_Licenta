@@ -3,8 +3,7 @@
     public enum Role
     {
         Admin ,
-        Client ,
-        User,
+        Client,
         Consultant,
         ProjectManager,
         DepartamentFinanciar

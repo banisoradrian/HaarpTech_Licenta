@@ -1,0 +1,56 @@
+﻿@model HaarpTech_Licenta.Models.CerintaProdus
+
+@{
+    ViewData["Title"] = "Detalii Cerință Produs";
+}
+
+<div class="card mx-auto mt-5 shadow" style="max-width: 900px;">
+    <div class="card-header bg-primary text-white text-center">
+        <h3><i class="bi bi-info-square"></i> @ViewData["Title"]</h3>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+
+            <dt class="col-sm-4">Data Elaborare:</dt>
+            <dd class="col-sm-8">@Model.DataElaborare.ToString("dd MMMM yyyy, HH:mm")</dd>
+
+            <dt class="col-sm-4">Prioritate:</dt>
+            <dd class="col-sm-8">
+                <span class="badge
+                    @(Model.Prioritate == "Critică" ? "bg-danger" :
+                      Model.Prioritate == "Ridicată" ? "bg-warning text-dark" :
+                      Model.Prioritate == "Medie" ? "bg-info" :
+                      Model.Prioritate == "Scăzută" ? "bg-secondary" : "bg-light text-dark")">
+                    @Model.Prioritate
+                </span>
+            </dd>
+
+            <dt class="col-sm-4">Status Cerință:</dt>
+            <dd class="col-sm-8">
+                <span class="badge
+                    @(Model.StatusCerinta == "Nouă" ? "bg-info" :
+                      Model.StatusCerinta == "În lucru" ? "bg-warning text-dark" :
+                      Model.StatusCerinta == "Rezolvată" ? "bg-success" :
+                      Model.StatusCerinta == "Respinsă" ? "bg-danger" :
+                      Model.StatusCerinta == "Amânată" ? "bg-secondary" : "bg-light text-dark")">
+                    @Model.StatusCerinta
+                </span>
+            </dd>
+
+            <dt class="col-sm-4">Descriere Detaliată:</dt>
+            <dd class="col-sm-8">@Model.DescriereDetaliata</dd>
+        </dl>
+    </div>
+    <div class="card-footer text-center">
+       
+
+        @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+        {
+            <a asp-controller="CerintaProdus" asp-action="Edit" asp-route-id="@Model.ID_CERINTA" class="btn btn-outline-warning">Editează</a>
+            <a asp-controller="CerintaProdus" asp-action="Delete" asp-route-id="@Model.ID_CERINTA" class="btn btn-outline-danger">Șterge</a>
+            <a asp-controller="StatusTichet" asp-action="IndexFiltred" asp-route-id="@Model.ID_CERINTA" class="btn btn-outline-primary">Vizualizare Tichete</a>
+            <a asp-controller="StatusTichet" asp-action="Create" asp-route-id="@Model.ID_CERINTA" class="btn btn-outline-success">Adaugă Tichet</a>
+            <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left-circle"></i> Înapoi la listă</a>
+        }
+    </div>
+</div>

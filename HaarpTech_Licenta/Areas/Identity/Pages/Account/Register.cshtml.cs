@@ -163,7 +163,7 @@ namespace HaarpTech_Licenta.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    await _userManager.AddToRoleAsync(user, Role.User.ToString()); // fiecare cont creat primeste cont de User
+                    await _userManager.AddToRoleAsync(user, Role.Client.ToString()); // fiecare cont creat primeste cont de Client
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

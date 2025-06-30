@@ -1,0 +1,161 @@
+﻿@model HaarpTech_Licenta.Models.NotaComanda
+
+@{
+    ViewData["Title"] = "Adaugă Notă Comandă";
+    var azi = DateTime.Today.ToString("yyyy-MM-dd");
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-4 fw-bold text-primary">@ViewData["Title"]</h1>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+            <i class="bi bi-arrow-left-circle"></i> Înapoi la listă
+        </a>
+    </div>
+
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white py-3">
+            <h5 class="card-title mb-0"><i class="bi bi-plus-circle"></i> Formular Notă Comandă</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post" class="row g-3">
+                @Html.AntiForgeryToken()
+
+                @* Chei primare / relații *@
+                @Html.HiddenFor(m => m.ID_NOTA_COMANDA)
+                @Html.HiddenFor(m => m.ID_CERERE)
+
+                <div class="col-md-6">
+                    <label asp-for="Destinatar" class="form-label">Destinatar</label>
+                    <input asp-for="Destinatar" class="form-control" />
+                    <span asp-validation-for="Destinatar" class="text-danger small"></span>
+                </div>
+
+
+                <div class="col-md-6">
+                    <label asp-for="DataNota" class="form-label">Data Notă</label>
+                    <input asp-for="DataNota"
+                           type="date"
+                           class="form-control"
+                           min="@azi" />
+                    <span asp-validation-for="DataNota" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="DataEmiterii" class="form-label">Data Emiterii</label>
+                    <input asp-for="DataEmiterii"
+                           type="date"
+                           class="form-control"
+                           min="@azi" />
+                    <span asp-validation-for="DataEmiterii" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Activitate" class="form-label">Activitate</label>
+                    <input asp-for="Activitate" class="form-control" />
+                    <span asp-validation-for="Activitate" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Denumire" class="form-label">Denumire</label>
+                    <input asp-for="Denumire" class="form-control" />
+                    <span asp-validation-for="Denumire" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Um" class="form-label">U.M.</label>
+                    <input asp-for="Um"
+                           type="number"
+                           class="form-control"
+                           min="0" />
+                    <span asp-validation-for="Um" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="Cantitate" class="form-label">Cantitate</label>
+                    <input asp-for="Cantitate"
+                           type="number"
+                           class="form-control"
+                           min="0" />
+                    <span asp-validation-for="Cantitate" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-4">
+                    <label asp-for="TermenLivrare" class="form-label">Termen Livrare (zile)</label>
+                    <input asp-for="TermenLivrare"
+                           type="number"
+                           class="form-control"
+                           min="0" />
+                    <span asp-validation-for="TermenLivrare" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="PretTotalFaraTva" class="form-label">Preț Total (fără TVA)</label>
+                    <input asp-for="PretTotalFaraTva"
+                           type="number"
+                           step="0.01"
+                           class="form-control"
+                           min="0" />
+                    <span asp-validation-for="PretTotalFaraTva" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Iban" class="form-label">IBAN</label>
+                    <input asp-for="Iban" class="form-control" />
+                    <span asp-validation-for="Iban" class="text-danger small"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Banca" class="form-label">Banca</label>
+                    <input asp-for="Banca" class="form-control" />
+                    <span asp-validation-for="Banca" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end mt-4">
+                    <button type="submit" class="btn btn-success px-4 me-2">
+                        <i class="fas fa-save me-2"></i> Salvează
+                    </button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-ban me-2"></i> Anulează
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+}
+
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+        min-height: 100vh;
+    }
+
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+        border: none;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #0d6efd;
+    }
+
+    .form-control, .form-select, .form-control:focus, .form-select:focus {
+        box-shadow: none;
+        border-radius: 0.5rem;
+    }
+
+    .btn-lg {
+        border-radius: 0.75rem;
+    }
+</style>
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">

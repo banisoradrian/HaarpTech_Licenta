@@ -24,7 +24,7 @@ namespace HaarpTech_Licenta.Models
         [Display(Name = "Status Oferta")]
         public string StatusOferta { get; set; }
 
-        public ICollection<Sedinta> Sedinte{ get; set; }
+        public Sedinta Sedinte { get; set; }
 
     }
 }

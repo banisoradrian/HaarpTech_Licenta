@@ -1,0 +1,146 @@
+﻿@model HaarpTech_Licenta.Models.FacturaCompletaViewModel;
+
+@{
+    ViewData["Title"] = "Creare Factură";
+    var minDate = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
+<h2 class="text-primary mb-4">@ViewData["Title"]</h2>
+
+<form asp-action="CreateFactura" method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        @Html.AntiForgeryToken()
+        <input asp-for="Factura.ID_CLIENT" type="hidden" />
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <label asp-for="Factura.SeriaFactura"></label>
+            <input asp-for="Factura.SeriaFactura" class="form-control" />
+            <span asp-validation-for="Factura.SeriaFactura" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Factura.NumarFactura"></label>
+            <input asp-for="Factura.NumarFactura" class="form-control" />
+            <span asp-validation-for="Factura.NumarFactura" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mt-3">
+            <label asp-for="Factura.DataEmitere"></label>
+            <input asp-for="Factura.DataEmitere" type="date" class="form-control" min="@minDate" />
+            <span asp-validation-for="Factura.DataEmitere" class="text-danger"></span>
+        </div>
+        <div class="col-md-6 mt-3">
+            <label asp-for="Factura.Moneda" class="form-label fw-bold"></label>
+            <select asp-for="Factura.Moneda" class="form-select" required>
+                <option value="" disabled selected>Selectați moneda</option>
+                <option value="RON">RON</option>
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
+            </select>
+            <div class="invalid-feedback">Moneda este obligatorie.</div>
+        </div>
+
+
+    </div>
+
+    <h5 class="text-secondary mt-4">Linii Factură</h5>
+    <table class="table table-bordered mt-2" id="elementeTable">
+        <thead class="table-light">
+            <tr>
+                <th>Nr. Crt</th>
+                <th>Produs / Serviciu</th>
+                <th>UM</th>
+                <th>Cantitate</th>
+                <th>Valoare Fără TVA</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.ElementeFactura.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input asp-for="ElementeFactura[@i].NrCrt" class="form-control" readonly />
+                        <span asp-validation-for="ElementeFactura[@i].NrCrt" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input asp-for="ElementeFactura[@i].DenumireProdus" class="form-control" />
+                        <span asp-validation-for="ElementeFactura[@i].DenumireProdus" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input asp-for="ElementeFactura[@i].Um" class="form-control" />
+                        <span asp-validation-for="ElementeFactura[@i].Um" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input asp-for="ElementeFactura[@i].Cantitate" class="form-control" />
+                        <span asp-validation-for="ElementeFactura[@i].Cantitate" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <input asp-for="ElementeFactura[@i].ValoareFaraTva" class="form-control" />
+                        <span asp-validation-for="ElementeFactura[@i].ValoareFaraTva" class="text-danger"></span>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm remove-row">X</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-outline-primary mb-4" id="addRow">
+        Adaugă rând
+    </button>
+
+    <div class="d-flex justify-content-end gap-2">
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> Salvează Factura
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">Renunță</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        let rowIdx = @Model.ElementeFactura.Count;
+
+        document.getElementById("addRow").addEventListener("click", function () {
+            const tbody = document.querySelector("#elementeTable tbody");
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>
+                  <input name="ElementeFactura[${rowIdx}].NrCrt" value="${rowIdx + 1}" class="form-control" readonly />
+                  <span data-valmsg-for="ElementeFactura[${rowIdx}].NrCrt" data-valmsg-replace="true" class="text-danger"></span>
+                </td>
+                <td>
+                  <input name="ElementeFactura[${rowIdx}].DenumireProdus" class="form-control" />
+                  <span data-valmsg-for="ElementeFactura[${rowIdx}].DenumireProdus" data-valmsg-replace="true" class="text-danger"></span>
+                </td>
+                <td>
+                  <input name="ElementeFactura[${rowIdx}].Um" class="form-control" />
+                  <span data-valmsg-for="ElementeFactura[${rowIdx}].Um" data-valmsg-replace="true" class="text-danger"></span>
+                </td>
+                <td>
+                  <input name="ElementeFactura[${rowIdx}].Cantitate" class="form-control" />
+                  <span data-valmsg-for="ElementeFactura[${rowIdx}].Cantitate" data-valmsg-replace="true" class="text-danger"></span>
+                </td>
+                <td>
+                  <input name="ElementeFactura[${rowIdx}].ValoareFaraTva" class="form-control" />
+                  <span data-valmsg-for="ElementeFactura[${rowIdx}].ValoareFaraTva" data-valmsg-replace="true" class="text-danger"></span>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-danger btn-sm remove-row">X</button>
+                </td>
+            `;
+            tbody.appendChild(newRow);
+            // reaplică regulile unobtrusive
+            $.validator.unobtrusive.parse(tbody);
+            rowIdx++;
+        });
+
+        document.querySelector("#elementeTable").addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-row")) {
+                e.target.closest("tr").remove();
+            }
+        });
+    </script>
+}

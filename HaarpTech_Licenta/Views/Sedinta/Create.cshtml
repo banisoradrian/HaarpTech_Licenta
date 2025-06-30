@@ -1,80 +1,111 @@
 ﻿@model HaarpTech_Licenta.Models.Sedinta
 
 @{
-    ViewData["Title"] = "Creare Ședință";
+    ViewData["Title"] = "Creează Ședință";
 }
 
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Create" method="post">
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="fas fa-calendar me-2"></i>@ViewData["Title"]</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post" class="needs-validation" novalidate>
             @Html.AntiForgeryToken()
-            <input type="hidden" asp-for="ID_CERERE" />
+            @Html.HiddenFor(m => m.ID_CERERE)
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="form-group mb-3">
-                <label asp-for="DataSedinta" class="control-label"></label>
-                <input asp-for="DataSedinta" class="form-control" />
-                <span asp-validation-for="DataSedinta" class="text-danger"></span>
+            <div class="mb-4">
+                <label asp-for="Subiect" class="form-label fw-bold"></label>
+                <input asp-for="Subiect" class="form-control" placeholder="Introduceți subiectul ședinței..." required />
+                <div class="invalid-feedback">Subiectul este obligatoriu.</div>
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Subiect" class="control-label"></label>
-                <input asp-for="Subiect" class="form-control" />
-                <span asp-validation-for="Subiect" class="text-danger"></span>
-            </div>
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <label asp-for="DataSedinta" class="form-label fw-bold"></label>
+                    <input asp-for="DataSedinta" type="datetime-local" class="form-control" required />
+                    <div class="invalid-feedback">Data ședinței este obligatorie.</div>
+                </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Descriere" class="control-label"></label>
-                <textarea asp-for="Descriere" class="form-control" rows="4"></textarea>
-                <span asp-validation-for="Descriere" class="text-danger"></span>
-            </div>
+                <div class="col-md-6">
+                    <label asp-for="Locatie" class="form-label fw-bold"></label>
+                    <input asp-for="Locatie" class="form-control" placeholder="Introduceți locația..." />
+                </div>
 
-            @if (User.IsInRole("Admin") || User.IsInRole("Consultant"))
-            {
-                <div class="form-group mb-3">
-                    <label asp-for="StatusSedinta" class="control-label"></label>
-                    <select asp-for="StatusSedinta" class="form-control">
+                <div class="col-md-6">
+                    <label asp-for="StatusSedinta" class="form-label fw-bold"></label>
+                    <select asp-for="StatusSedinta" class="form-select" required>
+                        <option value="" disabled selected>Selectați statusul</option>
                         <option value="Planificată">Planificată</option>
-                        <option value="Confirmată">Confirmată</option>
+                        <option value="În desfășurare">În desfășurare</option>
+                        <option value="Finalizată">Finalizată</option>
                         <option value="Anulată">Anulată</option>
                     </select>
-                    <span asp-validation-for="StatusSedinta" class="text-danger"></span>
+                    <div class="invalid-feedback">Selectați statusul ședinței.</div>
                 </div>
-            }
-            else
-            {
-                <div class="form-group mb-3">
-                    <label asp-for="StatusSedinta" class="control-label"></label>
-                    <input asp-for="StatusSedinta" class="form-control" value="Planificată" readonly />
-                    <span asp-validation-for="StatusSedinta" class="text-danger"></span>
-                </div>
-            }
 
-            <div class="form-group mb-3">
-                <label asp-for="Locatie" class="control-label"></label>
-                <input asp-for="Locatie" class="form-control" />
-                <span asp-validation-for="Locatie" class="text-danger"></span>
+                <div class="col-md-6">
+                    <label asp-for="TipSedinta" class="form-label fw-bold"></label>
+                    <select asp-for="TipSedinta" class="form-select" required>
+                        <option value="" disabled selected>Selectați tipul</option>
+                        <option value="Internă">Internă</option>
+                        <option value="Externă">Externă</option>
+                        <option value="Online">Online</option>
+                    </select>
+                    <div class="invalid-feedback">Selectați tipul ședinței.</div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Descriere" class="form-label fw-bold"></label>
+                    <textarea asp-for="Descriere" class="form-control" rows="5" placeholder="Introduceți detaliile ședinței..." required></textarea>
+                    <div class="invalid-feedback">Descrierea este obligatorie.</div>
+                </div>
+
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="TipSedinta" class="control-label"></label>
-                <select asp-for="TipSedinta" class="form-control">
-                    <option value="Față în față">Față în față</option>
-                    <option value="Online">Online</option>
-                    <option value="Telefonic">Telefonic</option>
-                </select>
-                <span asp-validation-for="TipSedinta" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mt-4">
-                <button type="submit" class="btn btn-primary">Salvează</button>
-                <a asp-action="Index" asp-controller="Home" class="btn btn-secondary ms-2">Anulează</a>
+            <!-- Butoane -->
+            <div class="d-flex gap-3 mt-5">
+                <button type="submit" class="btn btn-success px-4">
+                    <i class="fas fa-save me-2"></i>Salvează
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                    <i class="fas fa-arrow-left me-2"></i>Înapoi
+                </a>
             </div>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Validare client-side custom
+        (function () {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+
+        // Setare valoare implicită pentru dată
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const day = now.getDate().toString().padStart(2, '0');
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+
+            const defaultDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+            document.getElementById('DataSedinta').value = defaultDateTime;
+        });
+    </script>
 }

@@ -1,0 +1,84 @@
+﻿@model HaarpTech_Licenta.Models.FacturaCompletaViewModel
+
+@{
+    ViewData["Title"] = "Detalii Factură";
+}
+
+<div class="card mx-auto mt-5 shadow" style="max-width: 900px;">
+    <div class="card-header bg-primary text-white text-center">
+        <h3><i class="bi bi-receipt"></i> @ViewData["Title"]</h3>
+    </div>
+
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">Seria Facturii:</dt>
+            <dd class="col-sm-8">@Model.Factura.SeriaFactura</dd>
+            <dt class="col-sm-4">Numărul Facturii:</dt>
+            <dd class="col-sm-8">@Model.Factura.NumarFactura</dd>
+            <dt class="col-sm-4">Data Emiterii:</dt>
+            <dd class="col-sm-8">@Model.Factura.DataEmitere.ToString("dd.MM.yyyy")</dd>
+            <dt class="col-sm-4">Moneda:</dt>
+            <dd class="col-sm-8">@Model.Factura.Moneda</dd>
+            <dt class="col-sm-4">Total Fără TVA:</dt>
+            <dd class="col-sm-8">@Model.Factura.TotalFaraTva?.ToString("N2")</dd>
+            <dt class="col-sm-4">Total TVA:</dt>
+            <dd class="col-sm-8">@Model.Factura.TotalCuTva?.ToString("N2")</dd>
+            <dt class="col-sm-4">Total Factură:</dt>
+            <dd class="col-sm-8">@Model.Factura.TotalFactura?.ToString("N2")</dd>
+        </dl>
+
+        <hr />
+
+        <h4 class="mt-4">Linii factură</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nr. crt.</th>
+                    <th>Produs / Serviciu</th>
+                    <th>UM</th>
+                    <th>Cantitate</th>
+                    <th>Valoare fără TVA</th>
+                    <th>TVA</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.ElementeFactura?.Any() == true)
+                {
+                    foreach (var linie in Model.ElementeFactura)
+                    {
+                        <tr>
+                            <td>@linie.NrCrt</td>
+                            <td>@linie.DenumireProdus</td>
+                            <td>@linie.Um</td>
+                            <td>@linie.Cantitate</td>
+                            <td>@linie.ValoareFaraTva.ToString("N2")</td>
+                            <td>@linie.ValoareCuTva.ToString("N2")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">Nu există linii de factură.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-footer text-center">
+
+        @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Factura.ID_FACTURA" class="btn btn-outline-warning">
+                <i class="bi bi-pencil-square"></i> Editează
+            </a>
+            <a asp-action="Delete" asp-route-id="@Model.Factura.ID_FACTURA" class="btn btn-outline-danger">
+                <i class="bi bi-trash"></i> Șterge
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Înapoi la listă
+            </a>
+        }
+    </div>
+</div>

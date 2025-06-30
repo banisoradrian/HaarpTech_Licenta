@@ -23,22 +23,24 @@ namespace HaarpTech_Licenta.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [HttpGet("sedinta/index")]
-        public async Task<IActionResult> Index(int? page)
+        [HttpGet("Sedinta/Index")]
+        public async Task<IActionResult> Index()
         {
-            int pageNumber = page ?? 1;      // pagina curentă
-            int pageSize = 10;             // înregistrări per pagină
+            var sedintaRepository = await _sedintaRepository.GetAllAsync();
 
-            var allSedinte = await _sedintaRepository.GetAllAsync();
-            // converteşti la IPagedList:
-            IPagedList<Sedinta> pagedSedinte = allSedinte
-                .OrderBy(s => s.DataSedinta)        // opțional: ordonare
-                .ToPagedList(pageNumber, pageSize);
-
-            return View(pagedSedinte);
+            return View(sedintaRepository);
         }
 
-        [HttpGet("sedinta/create/{id?}")]
+        [HttpGet("Sedinta/IndexSedintaRaport1")]
+        public async Task<IActionResult> IndexSedintaRaport(string id)
+        {
+            var sedintaRepository = await _sedintaRepository.GetAllRaportCerintaAsync(id);
+
+            return View("Index", sedintaRepository);
+        }
+
+
+        [HttpGet("Sedinta/Create/{id?}")]
         public IActionResult Create(string id = null)
         {
             string userId = _httpContextAccessor.HttpContext!
@@ -53,7 +55,7 @@ namespace HaarpTech_Licenta.Controllers
             return View("Create", model);
         }
 
-        [HttpPost("sedinta/create/{id?}")]
+        [HttpPost("Sedinta/Create/{id?}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Sedinta model)
         {
@@ -79,7 +81,8 @@ namespace HaarpTech_Licenta.Controllers
             return View(model);
         }
 
-        [HttpGet("sedinta/edit")]
+        [Authorize(Roles = "Admin,Consultant")]
+        [HttpGet("Sedinta/Edit")]
         public async Task<IActionResult> Edit(string id)
         {
             var sedinta = await _sedintaRepository.GetByIdAsync(id);
@@ -88,7 +91,7 @@ namespace HaarpTech_Licenta.Controllers
             return View(sedinta);
         }
 
-        [HttpPost("sedinta/edit")]
+        [HttpPost("Sedinta/Edit")]
         public async Task<IActionResult> Edit(Sedinta s)
         {
             if (!ModelState.IsValid)
@@ -117,6 +120,7 @@ namespace HaarpTech_Licenta.Controllers
             return View(user);
         }
 
+        [Authorize(Roles = "Admin,Consultant")]
         public async Task<IActionResult> Delete(string id)
         {
             var sedinta = await _sedintaRepository.GetByIdAsync(id);

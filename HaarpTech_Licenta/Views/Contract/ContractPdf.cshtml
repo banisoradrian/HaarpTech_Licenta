@@ -1,0 +1,197 @@
+﻿@model HaarpTech_Licenta.Models.Contract
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Contract Furnizare - @Model.NumarContract</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12pt;
+            margin: 1in;
+            color: #000;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            max-width: 100px;
+            margin-right: 15px;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .title h1 {
+                font-size: 16pt;
+                text-transform: uppercase;
+            }
+
+        .section {
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+            .section p, .section ol, .section ul {
+                margin-bottom: 10px;
+            }
+
+        .footer {
+            margin-top: 40px;
+        }
+
+        .parties, .duties {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="~/images/HaarpTechLogo1.png" alt="HT Logo" class="logo" />
+        <div class="title">
+            <h1>Contract de Furnizare Produse și Servicii</h1>
+            <p>Nr. @Model.NumarContract / Data @Model.DataContract.ToString("dd.MM.yyyy")</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <strong>PARTILE CONTRACTANTE:</strong>
+        <ol class="parties">
+            <li><strong> 1. SC @Model.NumeBeneficiar </strong>, denumită în continuare <strong>„Beneficiar”;</strong></li>
+            <li><strong>SC HAARP TECH S.R.L</strong>, cu sediul social în Sat Caraclău , Comuna Bârsănești , Nr. 17, județ Bacău, România, cod de înregistrare fiscală 17246849, ,înregistrată la Registrul Comerțului cu nr. J40/24/2025, cont bancar RO22BTRLRONCRT123456674 deschis la Banca Transilvania, reprezentată de Administrator Bănișor Adrian-Ștefan, denumită în continuare <strong>„Furnizor”</strong></li>
+        </ol>
+        <p>denumite individual <strong>„Partea”</strong> și colectiv <strong>„Părțile”</strong>, convin să încheie prezentul Contract („Contractul”) în următorii termeni și condiții:</p>
+    </div>
+
+    <div class="section">
+        <strong>1. OBIECTUL CONTRACTULUI</strong>
+        <p>1.1 Părțile stabilesc că livrarea se va realiza remote, din orice locație a Furnizorului, în sistem de telemuncă.</p>
+        <p>1.2 Furnizorul va organiza executarea conform standardelor aplicabile, cu condiția livrării integrale a produselor și serviciilor menționate în Anexe.</p>
+    </div>
+
+    <div class="section">
+        <strong>2. DURATA CONTRACTULUI</strong>
+        <ol class="duties">
+            <li>Părțile pot conveni prelungirea sau modificarea Contractului prin act adițional semnat și ștampilat de ambele părți.</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <strong>3. OBLIGAȚIILE PĂRȚILOR</strong>
+        <strong>3.1 Obligațiile Furnizorului:</strong>
+        <ol class="duties">
+            <li>Să furnizeze produsele și serviciile cu atenția și eficiența necesară, conform standardelor naționale sau internaționale.</li>
+            <li>Să protejeze interesele Beneficiarului în relațiile cu terții.</li>
+            <li>Să nu desfășoare activități conflictuale cu interesele Beneficiarului.</li>
+            <li>Să notifice imediat Beneficiarul în cazul întârzierilor.</li>
+            <li>Să asigure logistica necesară pentru furnizare (echipamente, instrumente, comunicații), cu excepția tarifelor agreate.</li>
+            <li>Furnizorul are libertatea de organizare și asumă riscurile inerente prestării serviciilor.</li>
+            <li>Declară și garantează deținerea licențelor necesare pentru drepturile de proprietate intelectuală.</li>
+        </ol>
+        <strong>3.2 Obligațiile Beneficiarului:</strong>
+        <ol class="duties">
+            <li>Să verifice și să semneze procesele verbale de recepție, dacă calitatea e corespunzătoare.</li>
+            <li>Să furnizeze datele și informațiile necesare prestării serviciilor.</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <strong>4. TERMENE ȘI CONDIȚII DE PLATĂ</strong>
+        <ol class="duties">
+            <li>Facturile vor include valoarea și detaliile livrărilor și rapoartelor de recepție.</li>
+            <li>Emitere în lei la cursul BNR din ziua facturii.</li>
+            <li>O copie electronică a facturii se trimite Beneficiarului în ziua emiterii.</li>
+            <li>Cheltuielile suplimentare vor fi plătite de Beneficiar pe baza documentelor justificative.</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <strong>5. CONFIDENȚIALITATE ȘI DREPTURI DE AUTOR</strong>
+        <ol class="duties">
+            <li>Furnizorul va păstra confidențialitatea informațiilor dezvăluite de Beneficiar.</li>
+            <li>Descrierea detaliată a informațiilor confidențiale și obligațiilor de ne-divulgare.</li>
+            <li>Obligațiile de confidențialitate rămân valabile după încetarea Contractului.</li>
+            <li>Beneficiarul devine titular al drepturilor de proprietate intelectuală.</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <strong>6. FORȚA MAJORĂ</strong>
+        <ol class="duties">
+            <li>Niciuna dintre Părți nu răspunde pentru evenimente de forță majoră.</li>
+            <li>Durata >30 zile permite încetarea Contractului prin notificare.</li>
+            <li>Obligațiile de notificare și documentare a cazului de forță majoră.</li>
+            <li>Consecințe nerespectării notificărilor.</li>
+            <li>Plata facturilor datorate într-un caz de forță majoră trebuie respectată.</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <strong>7. PENALITĂȚI</strong>
+        <ol class="duties">
+            <li>Beneficiarul poate solicita Remedierea produselor și serviciilor neconforme.</li>
+            <li>Penalități pentru întârzierea livrării, conform Anexelor.</li>
+            <li>Penalități pentru întârzierea plății, conform Anexelor.</li>
+            <li>Răspunderea Beneficiarului pentru pierderi și daune.</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <strong>8. MODIFICAREA ȘI ÎNCETAREA CONTRACTULUI</strong>
+        <ol class="duties">
+            <li>Modificări prin acte adiționale semnate de ambele Părți.</li>
+            <li>Încetare prin acord, reziliere sau expirarea duratei.</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <strong>9. LITIGII. LEGEA APLICABILĂ</strong>
+        <ol class="duties">
+            <li>Litigiile se rezolvă amiabil, apoi în instanțele de la sediul Beneficiarului.</li>
+            <li>Contractul este guvernat de legislația României.</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <strong>10. NOTIFICĂRI</strong>
+        <ol class="duties">
+            <li>Notificările se fac în scris, prin scrisoare recomandată sau direct.</li>
+            <li>Notificările transmise poștal se consideră primite la data confirmării primirii.</li>
+            <li>Orice modificare de coordonate este opozabilă după comunicare.</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <strong>11. PROTECȚIA DATELOR CU CARACTER PERSONAL</strong>
+        <ol class="duties">
+            <li>Datele cu caracter personal puse la dispoziție de Beneficiar sunt confidențiale.</li>
+            <li>Furnizorul respectă Anexa – Acord de prelucrare date cu caracter personal.</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <strong>12. CLAUZE FINALE</strong>
+        <ol class="duties">
+            <li>Invaliditatea unei prevederi nu afectează restul Contractului.</li>
+            <li>Contractul reprezintă întreaga înțelegere între Părți.</li>
+            <li>Modificările datei sau a datelor de identificare se comunică imediat.</li>
+            <li>Neexercitarea unui drept nu înseamnă renunțare la acel drept.</li>
+            <li>Cesionarea obligațiilor se poate face doar cu notificare scrisă.</li>
+        </ol>
+    </div>
+
+    <div class="footer">
+        <p>Beneficiar, _____________________</p>
+        <p>Furnizor, _______________________</p>
+    </div>
+</body>
+</html>

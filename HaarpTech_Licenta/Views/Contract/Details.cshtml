@@ -1,0 +1,75 @@
+﻿@model HaarpTech_Licenta.Models.Contract
+
+@{
+    ViewData["Title"] = "Detalii Contract";
+}
+
+<div class="card mx-auto mt-5 shadow" style="max-width: 900px;">
+    <div class="card-header bg-primary text-white text-center">
+        <h3><i class="bi bi-file-earmark-text"></i> @ViewData["Title"]</h3>
+    </div>
+
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">Număr Contract:</dt>
+            <dd class="col-sm-8">@Model.NumarContract</dd>
+
+            <dt class="col-sm-4">Nume Beneficiar:</dt>
+            <dd class="col-sm-8">@Model.NumeBeneficiar</dd>
+
+            <dt class="col-sm-4">Data Contract:</dt>
+            <dd class="col-sm-8">@Model.DataContract.ToString("dd MMMM yyyy, HH:mm")</dd>
+        </dl>
+    </div>
+
+    <div class="card-footer text-center">
+
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Consultant"))
+        {
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left-circle"></i> Înapoi la listă
+            </a>
+            <a asp-controller="Contract" asp-action="Edit" asp-route-id="@Model.ID_CONTRACT" class="btn btn-outline-warning">
+                <i class="bi bi-pencil-square"></i> Editează
+            </a>
+
+            <a asp-controller="Contract" asp-action="Delete" asp-route-id="@Model.ID_CONTRACT" class="btn btn-outline-danger">
+                <i class="bi bi-trash"></i> Șterge
+            </a>
+        }
+            <a asp-controller="ClientData"  asp-action="Create" asp-route-id="@Model.ID_CONTRACT" class="btn btn-outline-success" title="Adaugă datele pentru care se va genera factura fiscală">
+                <i class="bi bi-plus-circle"></i> Adugă date pentru factura
+            </a>
+
+            <a asp-controller="ClientData" asp-action="IndexFiltred" asp-route-id="@Model.ID_CONTRACT" class="btn btn-outline-primary">
+                <i class="bi bi-binoculars-fill"></i> Vizualizare Date pentru Factuare
+            </a>
+       
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 15px;
+            transition: transform 0.2s;
+        }
+
+        dt {
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        dd {
+            color: #343a40;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            font-size: 0.85em;
+            padding: 0.5em 0.75em;
+            min-width: 90px;
+        }
+    </style>
+}

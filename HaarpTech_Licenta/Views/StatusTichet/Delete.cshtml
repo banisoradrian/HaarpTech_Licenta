@@ -1,0 +1,16 @@
+﻿@model HaarpTech_Licenta.Models.StatusTichet
+@{
+    ViewData["Title"] = "Ștergere Tichet";
+}
+
+<h2>Confirmare Ștergere Ședință</h2>
+<div class="alert alert-danger">
+    <p>Sigur doriți să ștergeți Tichetul: <strong>@Model.Subiect</strong> </p>
+</div>
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="ID_TICHET" />
+    <button type="submit" class="btn btn-danger">Șterge</button>
+    <a asp-action="Index" class="btn btn-secondary">Anulează</a>
+</form>
+
+

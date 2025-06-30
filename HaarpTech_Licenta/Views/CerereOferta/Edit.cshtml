@@ -43,13 +43,20 @@
                         </select>
                         <span asp-validation-for="StatusCerere" class="text-danger"></span>
                     </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Pret" class="control-label"></label>
+                        <input asp-for="Pret" type="number" step="0.01" class="form-control" readonly id="calculatedPrice" />
+                        <span asp-validation-for="Pret" class="text-danger"></span>
+                    </div>
                 </div>
 
                 <!-- Coloana 2 -->
                 <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="TipAplicatie" class="control-label"></label>
-                        <select asp-for="TipAplicatie" class="form-select">
+                        <select asp-for="TipAplicatie" class="form-select" id="tipAplicatie">
+                            <option value="">-- Selectează Tipul Aplicației --</option>
                             <option value="Web">Aplicație Web</option>
                             <option value="Mobile">Aplicație Mobile</option>
                             <option value="Desktop">Aplicație Desktop</option>
@@ -59,7 +66,8 @@
 
                     <div class="form-group">
                         <label asp-for="NivelDeSecuritate" class="control-label"></label>
-                        <select asp-for="NivelDeSecuritate" class="form-select">
+                        <select asp-for="NivelDeSecuritate" class="form-select" id="nivelSecuritate">
+                            <option value="">-- Selectează Nivelul de Securitate --</option>
                             <option value="Standard">Standard</option>
                             <option value="Înalt">Înalt</option>
                             <option value="Critic">Critic</option>
@@ -69,9 +77,9 @@
 
                     <div class="form-group">
                         <label asp-for="BazaDeDate" class="control-label"></label>
-                        <select asp-for="BazaDeDate" class="form-select">
-                            <option value="SQL Server">SQL Server</option>
-                            <option value="MySQL">MySQL</option>
+                        <select asp-for="BazaDeDate" class="form-select" id="bazaDeDate">
+                            <option value="">-- Selectează Baza de Date --</option>
+                            <option value="Microsoft SQL Server">Microsoft SQL Server</option>
                             <option value="Oracle">Oracle</option>
                         </select>
                         <span asp-validation-for="BazaDeDate" class="text-danger"></span>
@@ -82,7 +90,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="VolumDeDate" class="control-label"></label>
-                        <input asp-for="VolumDeDate" class="form-control" />
+                        <input asp-for="VolumDeDate" class="form-control" type="number" id="volumDate" min="0" />
                         <span asp-validation-for="VolumDeDate" class="text-danger"></span>
                     </div>
 
@@ -90,7 +98,7 @@
                         <label asp-for="BugetEstimat" class="control-label"></label>
                         <div class="input-group">
                             <input asp-for="BugetEstimat" class="form-control" />
-                            <span class="input-group-text">Lei</span>
+                            <span class="input-group-text">RON</span>
                         </div>
                         <span asp-validation-for="BugetEstimat" class="text-danger"></span>
                     </div>
@@ -102,7 +110,7 @@
                     </div>
                 </div>
 
-                <!-- Alte câmpuri -->
+                <!-- Descriere -->
                 <div class="col-12">
                     <div class="form-group">
                         <label asp-for="Descriere" class="control-label"></label>
@@ -111,22 +119,112 @@
                     </div>
                 </div>
 
-                <div class="col-12">
-                    <div class="form-group">
+                <!-- Servicii AI -->
+                <div class="col-md-6">
+                    <div class="form-group form-check">
+                        <input class="form-check-input" type="checkbox" id="serviciiAICheckbox" />
+                        <label class="form-check-label" for="serviciiAICheckbox">
+                            Servicii AI necesare
+                        </label>
+                    </div>
+                    <div class="form-group" id="serviciiAIInputGroup" style="display: none;">
                         <label asp-for="ServiciiAI" class="control-label"></label>
-                        <input asp-for="ServiciiAI" class="form-control" />
+                        <input asp-for="ServiciiAI" class="form-control" placeholder="Specificați serviciile AI necesare" />
                         <span asp-validation-for="ServiciiAI" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="col-12">
-                    <div class="form-group">
+                <!-- Servicii Cloud -->
+                <div class="col-md-6">
+                    <div class="form-group form-check">
+                        <input class="form-check-input" type="checkbox" id="serviciiCloudCheckbox" />
+                        <label class="form-check-label" for="serviciiCloudCheckbox">
+                            Servicii Cloud necesare
+                        </label>
+                    </div>
+                    <div class="form-group" id="serviciiCloudInputGroup" style="display: none;">
+                        <label asp-for="ServiciiCloud" class="control-label"></label>
+                        <input asp-for="ServiciiCloud" class="form-control" placeholder="Specificați serviciile Cloud necesare" />
+                        <span asp-validation-for="ServiciiCloud" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Integrare cu alte sisteme -->
+                <div class="col-md-6">
+                    <div class="form-group form-check">
+                        <input class="form-check-input" type="checkbox" id="integrareAlteSistemeCheckbox" />
+                        <label class="form-check-label" for="integrareAlteSistemeCheckbox">
+                            Integrare cu Alte Sisteme necesară
+                        </label>
+                    </div>
+                    <div class="form-group" id="integrareCuAlteSistemeInputGroup" style="display: none;">
                         <label asp-for="IntegrareCuAlteSisteme" class="control-label"></label>
-                        <input asp-for="IntegrareCuAlteSisteme" class="form-control" />
+                        <input asp-for="IntegrareCuAlteSisteme" class="form-control" placeholder="Enumerați sistemele de integrat" />
                         <span asp-validation-for="IntegrareCuAlteSisteme" class="text-danger"></span>
                     </div>
                 </div>
 
+                <!-- Autentificare și acces -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="TipLogare" class="control-label"></label>
+                        <select asp-for="TipLogare" class="form-select" id="tipLogare">
+                            <option value="">-- Tip Logare --</option>
+                            <option value="Simplă (email/parolă)">Simplă</option>
+                            <option value="OAuth (Google/Facebook)">OAuth</option>
+                            <option value="SSO (Single Sign-On)">SSO</option>
+                        </select>
+                        <span asp-validation-for="TipLogare" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="TipAccess" class="control-label"></label>
+                        <select asp-for="TipAccess" class="form-select" id="tipAccess">
+                            <option value="">-- Tip Acces --</option>
+                            <option value="Public">Public</option>
+                            <option value="Privat (cu autentificare)">Privat</option>
+                            <option value="Mixt">Mixt</option>
+                        </select>
+                        <span asp-validation-for="TipAccess" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Accesibilitate" class="control-label"></label>
+                        <select asp-for="Accesibilitate" class="form-select" id="accesibilitate">
+                            <option value="">-- Accesibilitate --</option>
+                            <option value="Standard (conform legilor locale)">Standard</option>
+                            <option value="WCAG 2.1 AA">WCAG 2.1 AA</option>
+                        </select>
+                        <span asp-validation-for="Accesibilitate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Conturi logate, Tehnologie, Specificații -->
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="ConturiLogate" class="control-label"></label>
+                        <input asp-for="ConturiLogate" class="form-control" type="number" min="0" id="conturiLogate" />
+                        <span asp-validation-for="ConturiLogate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Tehnologie" class="control-label"></label>
+                        <input asp-for="Tehnologie" class="form-control" id="tehnologie" />
+                        <span asp-validation-for="Tehnologie" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="SpecificatiiTehnice" class="control-label"></label>
+                        <textarea asp-for="SpecificatiiTehnice" class="form-control" rows="3" id="specificatiiTehnice"></textarea>
+                        <span asp-validation-for="SpecificatiiTehnice" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Submit -->
                 <div class="col-12 mt-4">
                     <div class="d-flex justify-content-end gap-2">
                         <button type="submit" class="btn btn-primary">
@@ -157,6 +255,11 @@
             resize: vertical;
             min-height: 100px;
         }
+
+        ::placeholder {
+            color: #6c757d;
+            opacity: 0.7;
+        }
     </style>
 }
 
@@ -164,4 +267,22 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        $(function() {
+            function toggle(checkbox, group) {
+                const checked = $(checkbox).prop('checked');
+                $(group).toggle(checked);
+                if (!checked) $(group).find('input').val('');
+            }
+
+            $('#serviciiAICheckbox').change(() => toggle('#serviciiAICheckbox', '#serviciiAIInputGroup'));
+            $('#serviciiCloudCheckbox').change(() => toggle('#serviciiCloudCheckbox', '#serviciiCloudInputGroup'));
+            $('#integrareAlteSistemeCheckbox').change(() => toggle('#integrareAlteSistemeCheckbox', '#integrareCuAlteSistemeInputGroup'));
+
+            // inițializează la încărcare
+            toggle('#serviciiAICheckbox', '#serviciiAIInputGroup');
+            toggle('#serviciiCloudCheckbox', '#serviciiCloudInputGroup');
+            toggle('#integrareAlteSistemeCheckbox', '#integrareCuAlteSistemeInputGroup');
+        });
+    </script>
 }
