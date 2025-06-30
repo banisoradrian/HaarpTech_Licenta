@@ -103,3 +103,7 @@ Pagina de start
 ![image](https://github.com/user-attachments/assets/81b3d4c4-e940-414e-91c3-32fe3702edcc)
 
 
+# "Ai uitat parola"
+Nu mi-a iesit sa fac un serviciu care sa schimbe parola utilizatorului , dar am adaugat acest mesaj pentru a specifica acest lucru
+![image](https://github.com/user-attachments/assets/dbb96b66-97bd-444e-83d8-49ca2d96bc4d)
+
