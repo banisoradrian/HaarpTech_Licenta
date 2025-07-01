@@ -42,7 +42,7 @@ namespace HaarpTech_Licenta.Repository
                                         TOTAL_FARA_TVA   AS TotalFaraTva,
                                         TOTAL_TVA        AS TotalCuTva,
                                         TOTAL_FACTURA    AS TotalFactura
-                                    FROM FACT_FACTURI
+                                    FROM FACT_FACTURI_V
                                     WHERE ID_FACTURA = @IdFactura";
 
             return await conn.QueryFirstOrDefaultAsync<Factura>(sql, new { IdFactura = idFactura });
@@ -64,7 +64,7 @@ namespace HaarpTech_Licenta.Repository
                                         TOTAL_FARA_TVA   AS TotalFaraTva,
                                         TOTAL_TVA        AS TotalCuTva,
                                         TOTAL_FACTURA    AS TotalFactura
-                                   FROM FACT_FACTURI";
+                                   FROM FACT_FACTURI_V";
 
             return await conn.QueryAsync<Factura>(sql);
         }
@@ -142,7 +142,7 @@ public async Task<FacturaCompletaViewModel> GetFacturaWithElementsByIdAsync(stri
             };
         }
 
-        // FacturaRepo.cs
+
         public async Task<FacturaCompletaViewModel> GetFacturaWithElementsAndClientDataByIdAsync(string idFactura)
         {
             using var conn = _databaseConnection.GetConnection();
@@ -189,12 +189,11 @@ public async Task<FacturaCompletaViewModel> GetFacturaWithElementsByIdAsync(stri
             VALOARE_TVA          AS ValoareCuTva
         FROM FACT_ELEMENTE_FACTURA
         WHERE ID_FACTURA = @IdFactura
-        ORDER BY NR_CRT;
-    ";
+        ORDER BY NR_CRT; ";
 
             using var multi = await conn.QueryMultipleAsync(sql, new { IdFactura = idFactura });
 
-            // 1) Citim header-ul (factură + client) ca dynamic și construim manual
+          
             var header = (await multi.ReadAsync<dynamic>()).FirstOrDefault();
             if (header == null)
                 return null;
@@ -231,7 +230,7 @@ public async Task<FacturaCompletaViewModel> GetFacturaWithElementsByIdAsync(stri
             // 2) Citim liniile facturii
             var lines = (await multi.ReadAsync<ElementeFactura>()).ToList();
 
-            // 3) Returnăm ViewModel-ul
+            // 3) Returnam ViewModel-ul
             return new FacturaCompletaViewModel
             {
                 Factura = factura,

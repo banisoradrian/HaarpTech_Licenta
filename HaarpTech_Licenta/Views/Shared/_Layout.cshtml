@@ -377,14 +377,14 @@
                    
 
 
-                    <a href="#pageSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action dropdown-toggle">
+                    @* <a href="#pageSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="list-group-item list-group-item-action dropdown-toggle">
                         <i class="bi bi-gear-fill"></i>Setări
                     </a>
                     <div class="collapse list-group list-group-flush" id="pageSubmenu">
                         <a href="#" class="list-group-item list-group-item-action ps-5">Setare 1</a>
                         <a href="#" class="list-group-item list-group-item-action ps-5">Setare 2</a>
                     </div>
-                </div>
+                </div> *@
             </nav>
 
             <div id="page-content-wrapper">
@@ -433,7 +433,7 @@
                     <ul>
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Acasă</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
-                        <li><a href="/About">Despre noi</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="DespreNoi">Despre Noi</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Cariere">Cariere</a></li>
                     </ul>
                 </div>

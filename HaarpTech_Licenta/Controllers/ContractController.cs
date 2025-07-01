@@ -149,16 +149,16 @@ namespace HaarpTech_Licenta.Controllers
             if (entity == null) 
                 return NotFound();
 
-            // root = "...HaarpTech_Licenta"
+            
             var root = _hostEnv.ContentRootPath;
-            // include subfolderul Documente_Chitante
+           
             var folder = Path.Combine(root, "Documente_Chitante", "ContractFiles");
             Directory.CreateDirectory(folder);
 
             var fileName = $"Contract_{entity.NumarContract}.pdf";
             var filePath = Path.Combine(folder, fileName);
 
-            // restul codului rămâne neschimbat...
+            
             byte[] pdfBytes;
             var viewPath = Path.Combine(root, "Views", "Contract", "ContractPdf.cshtml");
             var viewMod = System.IO.File.GetLastWriteTimeUtc(viewPath);

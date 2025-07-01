@@ -172,16 +172,16 @@ namespace HaarpTech_Licenta.Controllers
             if (string.IsNullOrEmpty(id))
                 return NotFound();
 
-            // Apelează metoda corectă care aduce și datele clientului
+            
             var vm = await _facturaRepo.GetFacturaWithElementsAndClientDataByIdAsync(id);
             if (vm?.Factura == null)
                 return NotFound();
 
-            // Asigură-te că nu sunt null
+            
             vm.ElementeFactura ??= new List<ElementeFactura>();
             vm.Client ??= new ClientData();
 
-            // Configurare fișier și cale
+            // Configurare fisier și cale
             var contentRoot = _hostEnv.ContentRootPath;
             var folderPath = Path.Combine(contentRoot, "Documente_Chitante", "FacturiFiles");
             Directory.CreateDirectory(folderPath);

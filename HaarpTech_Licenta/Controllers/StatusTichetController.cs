@@ -141,7 +141,7 @@ namespace HaarpTech_Licenta.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Assign(string id)   // id = tichetId
+        public async Task<IActionResult> Assign(string id)   
         {
             var tichet = await _statusTichetRepository.GetByIdAsync(id);
             if (tichet == null) return NotFound();

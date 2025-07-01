@@ -139,33 +139,29 @@ namespace HaarpTech_Licenta.Controllers
         [HttpGet("CerintaProdus/CerinteProdusPdf")]
         public async Task<IActionResult> CerinteProdusPdf()
         {
-            // 1) Preluăm toate cerințele
+            
             var all = await _cerintaProdusRepository.GetAllAsync()
                       ?? Enumerable.Empty<CerintaProdus>();
 
-            // 2) Filtrăm pe „Rezolvat”
             var rezolvate = all.Where(c => c.StatusCerinta == "Rezolvată").ToList();
 
-            // 3) Setări directoare pentru cache
             var contentRoot = _hostEnv.ContentRootPath;
-            // Poți alege „wwwroot/Documente” dacă vrei să fie accesibile direct
-            var folderPath = Path.Combine(contentRoot, "Documente_Cerinte", "RezolvatePdf");
+            var folderPath = Path.Combine(contentRoot, "Documente_Chitante", "Documente_Cerinte");
             Directory.CreateDirectory(folderPath);
             DateTime dataActuala = DateTime.Now;
-            // 4) Nume și cale fișier PDF
+
             var fileName = $"Cerinte_Produs_Rezolvate{dataActuala.Year}_{dataActuala.Month}_{dataActuala.Day}_{dataActuala.Hour}.pdf";
             var filePath = Path.Combine(folderPath, fileName);
 
             byte[] pdfBytes;
 
-            // 5) Verificăm dacă view‑ul s‑a modificat după PDF‑ul existent
+
             var viewPath = Path.Combine(contentRoot, "Views", "CerintaProdus", "RaportCerintaProdusPdf.cshtml");
             var viewModified = System.IO.File.GetLastWriteTimeUtc(viewPath);
             var fileModified = System.IO.File.Exists(filePath)
                 ? System.IO.File.GetLastWriteTimeUtc(filePath)
                 : DateTime.MinValue;
 
-            // 6) Regenerare dacă nu există sau e mai veche decât view‑ul
             if (!System.IO.File.Exists(filePath) || fileModified < viewModified)
             {
                 var pdfResult = new ViewAsPdf("RaportCerintaProdusPdf", rezolvate)

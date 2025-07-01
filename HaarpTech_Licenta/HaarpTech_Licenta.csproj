@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Documente_Chitante\Documente_Cerinte\" />
     <Folder Include="Documente_Chitante\ContractFiles\" />
     <Folder Include="Documente_Chitante\FacturiFiles\" />
     <Folder Include="Documente_Chitante\NoteDeComandaFiles\" />

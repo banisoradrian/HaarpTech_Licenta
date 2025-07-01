@@ -149,36 +149,42 @@ namespace HaarpTech_Licenta.Controllers
 
 
         [HttpGet("NotaComanda/PrintPdf/{id}")]
-        public async Task<IActionResult> PrintPdf(string id)
+        public async Task<IActionResult> PrintPdf(string id, bool refresh = false)
         {
             if (string.IsNullOrEmpty(id))
                 return NotFound();
 
-            // 1. Încarcă modelul
+
             var nota = await _notaComandaRepository.GetByIdAsync(id);
             if (nota == null)
                 return NotFound();
 
-            // 2. Directorul de stocare în rădăcina proiectului, sub Documente_Chitante
             var contentRoot = _hostEnv.ContentRootPath;
             var folderPath = Path.Combine(contentRoot, "Documente_Chitante", "NoteDeComandaFiles");
             Directory.CreateDirectory(folderPath);
 
-            // 3. Numele și calea fișierului PDF
-            var fileName = $"NotaComanda_{nota.NumarComanda}.pdf";
+
+            var safeNumar = string.Concat(nota.NumarComanda
+                .Where(c => !Path.GetInvalidFileNameChars().Contains(c)));
+            var fileName = $"NotaComanda_{safeNumar}.pdf";
             var filePath = Path.Combine(folderPath, fileName);
 
-            byte[] pdfBytes;
 
-            // 4. Verifică dacă view-ul s-a modificat după PDF-ul existent
             var viewPath = Path.Combine(contentRoot, "Views", "NotaComanda", "NotaDeComandaPdf.cshtml");
             var viewModified = System.IO.File.GetLastWriteTimeUtc(viewPath);
             var fileModified = System.IO.File.Exists(filePath)
                 ? System.IO.File.GetLastWriteTimeUtc(filePath)
                 : DateTime.MinValue;
 
-            // 5. Regenerare dacă nu există sau e mai vechi decât view-ul
-            if (!System.IO.File.Exists(filePath) || fileModified < viewModified)
+
+            var dataModified = nota.DataEmiterii.ToUniversalTime();
+
+            byte[] pdfBytes;
+
+            if (refresh
+                || !System.IO.File.Exists(filePath)
+                || fileModified < viewModified
+                || fileModified < dataModified)
             {
                 var pdf = new ViewAsPdf("NotaDeComandaPdf", nota)
                 {
@@ -196,9 +202,9 @@ namespace HaarpTech_Licenta.Controllers
                 pdfBytes = await System.IO.File.ReadAllBytesAsync(filePath);
             }
 
-            // 6. Trimite PDF-ul pentru download
             return File(pdfBytes, "application/pdf", fileName);
         }
+
     }
 }
 
